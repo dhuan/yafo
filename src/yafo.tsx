@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { replaceNth, allEqual, unzip } from './utils';
+import { fieldCollection } from './field_collection';
+import { FORM_FIELD_TYPE } from './types';
 
-export enum FORM_FIELD_TYPE { TEXT, SELECT }
+export { FORM_FIELD_TYPE } from './types';
+export { fieldCollection } from './field_collection';
 
 export type FormFieldOption = string | boolean | number | string[]
 

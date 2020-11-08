@@ -38,3 +38,4 @@ export const tupleToMap = <A, B>(tuples: [A, B][], map: Map<A, B>): Map<A, B> =>
     return tupleToMap(tuples.slice(1), map);
 }
 
+export const toNumber = (value: any): number => parseInt(value, 10)
