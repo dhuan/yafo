@@ -252,7 +252,7 @@ const initialValuesForForm = <T_FormFieldType extends unknown, T_TargetComponent
     props          : T_TargetComponentProps
 ) => (): FormValue[] => {
     if (!formOptions.propsToInitialValues)
-        return fields.map(getFieldInitial)
+        return fields.map(getFieldInitial(""))
 
     const initialValuesMap = formOptions.propsToInitialValues(props)
 
@@ -309,7 +309,8 @@ const getInvalidFields = <T extends unknown>(fields: FormField<T>[], validation:
 
 const getFieldId = <T extends unknown>({ id }: FormField<T>): T => id
 
-const getFieldInitial = <T extends unknown>({ initial }: FormField<T>): FormValue => initial
+const getFieldInitial = <T extends unknown>(defaultValue: FormValue) => ({ initial }: FormField<T>): FormValue =>
+    initial || defaultValue
 
 export const withForm = <T extends unknown, TargetComponentProps extends unknown>(
     formName          : string,
