@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { replaceNth, allEqual, unzip } from './utils';
 import { fieldCollection } from './field_collection';
-import { FORM_FIELD_TYPE } from './types';
+import { FormFieldType } from './types';
 
-export { FORM_FIELD_TYPE } from './types';
+export { FormFieldType } from './types';
 export { fieldCollection } from './field_collection';
 
 export type FormFieldOption = string | boolean | number | string[]
@@ -17,7 +17,7 @@ export type FieldValidator = <T>(value: FormValue, formValue: (id: T) => FormVal
 export type FormField<T> = {
     id         : T
     label      : string
-    type       : FORM_FIELD_TYPE
+    type       : FormFieldType
     valid      : FieldValidator
     initial    : FormValue
     options?   : FormFieldOptions
@@ -36,7 +36,7 @@ export type FormFieldComponentProps = {
     options        : FormFieldOptions
 }
 
-export type FieldCollection = Map<FORM_FIELD_TYPE, React.StatelessComponent<FormFieldComponentProps>>
+export type FieldCollection = Map<FormFieldType, React.StatelessComponent<FormFieldComponentProps>>
 
 export type FormValueFunc = <T>(id: T) => FormValue
 
@@ -105,8 +105,8 @@ const getFieldComponent = <T_FormFieldType extends unknown, T_TargetComponentPro
 
     const inputId = inputIds[index]
 
-    if (field.type === FORM_FIELD_TYPE.TEXT) {
-        const TextComponent: any = fieldCollection.get(FORM_FIELD_TYPE.TEXT)
+    if (field.type === FormFieldType.TEXT) {
+        const TextComponent: any = fieldCollection.get(FormFieldType.TEXT)
 
         return (
             <TextComponent
@@ -121,8 +121,8 @@ const getFieldComponent = <T_FormFieldType extends unknown, T_TargetComponentPro
         );
     }
 
-    if (field.type === FORM_FIELD_TYPE.SELECT) {
-        const SelectComponent: any = fieldCollection.get(FORM_FIELD_TYPE.SELECT)
+    if (field.type === FormFieldType.SELECT) {
+        const SelectComponent: any = fieldCollection.get(FormFieldType.SELECT)
 
         return (
             <SelectComponent

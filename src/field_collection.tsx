@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormFieldComponentProps } from "./yafo"
-import { FORM_FIELD_TYPE } from "./types"
+import { FormFieldType } from "./types"
 import { toNumber } from "./utils"
 
 const styles = {
@@ -79,6 +79,6 @@ const select: React.StatelessComponent<FormFieldComponentProps> =
 }
 
 export const fieldCollection = new Map([
-    [ FORM_FIELD_TYPE.TEXT, text ],
-    [ FORM_FIELD_TYPE.SELECT, select ],
+    [ FormFieldType.TEXT, text ],
+    [ FormFieldType.SELECT, select ],
 ])
