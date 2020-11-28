@@ -112,7 +112,7 @@ const getFieldComponent = <T_FormFieldType extends unknown, T_TargetComponentPro
             <TextComponent
                 inputId={inputId}
                 label={field.label}
-                value={value || ""}
+                value={value}
                 disabled={disabled}
                 onChange={changeValue(index)}
                 errorMessage={errorMessage}
@@ -128,7 +128,23 @@ const getFieldComponent = <T_FormFieldType extends unknown, T_TargetComponentPro
             <SelectComponent
                 inputId={inputId}
                 label={field.label}
-                value={value || ""}
+                value={value}
+                disabled={disabled}
+                onChange={changeValue(index)}
+                errorMessage={errorMessage}
+                options={fieldOptions}
+            />
+        );
+    }
+
+    if (field.type === FormFieldType.RADIO) {
+        const RadioComponent: any = fieldCollection.get(FormFieldType.RADIO)
+
+        return (
+            <RadioComponent
+                inputId={inputId}
+                label={field.label}
+                value={value}
                 disabled={disabled}
                 onChange={changeValue(index)}
                 errorMessage={errorMessage}
@@ -160,7 +176,7 @@ const toFieldComponents = <T_FormFieldType extends unknown, T_TargetComponentPro
 
     const field = fields[index];
 
-    const value = values[index];
+    const value = typeof values[index] === "undefined" ? "" : values[index];
 
     const fieldValid = validation[index]
 

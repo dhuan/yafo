@@ -78,7 +78,42 @@ const select: React.StatelessComponent<FormFieldComponentProps> =
     )
 }
 
+const radio: React.StatelessComponent<FormFieldComponentProps> =
+    ({ inputId, label, value, disabled, onChange, errorMessage, options }: FormFieldComponentProps) =>
+{
+    return (
+        <div style={styles.fieldWrapper}>
+            <div>
+                { label }
+            </div>
+
+            { (options.radioOptions as string[]).map((option, i) => (
+                <div
+                    key={["radio", label, i].join("-")}
+                    onClick={() => onChange(i)}
+                >
+                    <input
+                        name={inputId}
+                        type="radio"
+                        value={i}
+                        checked={i === value}
+                        readOnly={true}
+                    />
+                    { option }
+                </div>
+            )) }
+
+            { errorMessage !== "" && (
+                <div style={styles.errorMessage}>
+                    { errorMessage }
+                </div>
+            ) }
+        </div>
+    )
+}
+
 export const fieldCollection = new Map([
     [ FormFieldType.TEXT, text ],
     [ FormFieldType.SELECT, select ],
+    [ FormFieldType.RADIO, radio ],
 ])

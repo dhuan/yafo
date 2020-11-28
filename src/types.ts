@@ -1,1 +1,1 @@
-export enum FormFieldType { TEXT, SELECT }
+export enum FormFieldType { TEXT, SELECT, RADIO }
