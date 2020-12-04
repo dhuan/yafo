@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders 1`] = `
+<div>
+  <h1>
+    My Form
+  </h1>
+  <div
+    id="field-first-name"
+  >
+    <div
+      style={
+        Object {
+          "paddingBottom": 14,
+        }
+      }
+    >
+      <div>
+        First name
+      </div>
+      <div>
+        <input
+          disabled={false}
+          id="foobar-0"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    id="field-last-name"
+  >
+    <div
+      style={
+        Object {
+          "paddingBottom": 14,
+        }
+      }
+    >
+      <div>
+        First name
+      </div>
+      <div>
+        <input
+          disabled={false}
+          id="foobar-1"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    id="field-country"
+  >
+    <div
+      style={
+        Object {
+          "paddingBottom": 14,
+        }
+      }
+    >
+      <div>
+        Country
+      </div>
+      <select
+        disabled={false}
+        id="foobar-2"
+        onChange={[Function]}
+        value={0}
+      >
+        <option
+          value={0}
+        >
+          Choose a country
+        </option>
+        <option
+          value={1}
+        >
+          Brazil
+        </option>
+        <option
+          value={2}
+        >
+          Germany
+        </option>
+      </select>
+    </div>
+  </div>
+  <input
+    data-testid="submit"
+    onClick={[Function]}
+    type="button"
+    value="Click me"
+  />
+</div>
+`;
