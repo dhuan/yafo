@@ -138,6 +138,7 @@ const checkbox: React.StatelessComponent<FormFieldComponentProps> =
                                 type="checkbox"
                                 value={i}
                                 checked={checked}
+                                readOnly={true}
                             />
                             { option }
                         </div>

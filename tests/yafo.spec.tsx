@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom'
 import React from "react"
 import renderer from 'react-test-renderer';
-import { withForm, FormFieldType, FormProps, fieldCollection, FormField, FormValue } from "../src/yafo"
+import { withForm, FormFieldType, FormProps, fieldCollection, FormField, FormValue, parseCheckboxFormValue } from "../src/yafo"
 import {render, fireEvent, screen} from '@testing-library/react'
 
-enum TestForm { FirstName, LastName, Country, Gender }
+enum TestForm { FirstName, LastName, Country, Gender, Hobbies }
 
 const TestComponent = ({ form, callback }: { form: FormProps<TestForm>, callback: Function }) => {
     return (
@@ -25,6 +25,10 @@ const TestComponent = ({ form, callback }: { form: FormProps<TestForm>, callback
 
             <div id="field-gender">
                 { form.fieldComponents.get(TestForm.Gender) }
+            </div>
+
+            <div id="field-hobbies">
+                { form.fieldComponents.get(TestForm.Hobbies) }
             </div>
 
             <input
@@ -76,6 +80,15 @@ const formFields = (): FormField<TestForm>[] => [
         initial   : -1,
         disabled  : false,
         options   : { radioOptions: ["Male", "Female"]  }
+    },
+    {
+        id        : TestForm.Hobbies,
+        label     : "Hobbies",
+        type      : FormFieldType.CHECKBOX,
+        valid     : (chosenHobbies: FormValue) => [ parseCheckboxFormValue(chosenHobbies as string).length > 0, "Please choose at least one hobby." ],
+        initial   : "",
+        disabled  : false,
+        options   : { checkboxOptions: ["Soccer", "Movies", "Music", "Books"]  }
     },
 ]
 

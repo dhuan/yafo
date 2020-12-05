@@ -137,6 +137,77 @@ exports[`renders 1`] = `
       </div>
     </div>
   </div>
+  <div
+    id="field-hobbies"
+  >
+    <div
+      style={
+        Object {
+          "paddingBottom": 14,
+        }
+      }
+    >
+      <div>
+        Hobbies
+      </div>
+      <div
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
+      >
+        <div
+          onClick={[Function]}
+        >
+          <input
+            checked={false}
+            name="test_form-4"
+            readOnly={true}
+            type="checkbox"
+            value={0}
+          />
+          Soccer
+        </div>
+        <div
+          onClick={[Function]}
+        >
+          <input
+            checked={false}
+            name="test_form-4"
+            readOnly={true}
+            type="checkbox"
+            value={1}
+          />
+          Movies
+        </div>
+        <div
+          onClick={[Function]}
+        >
+          <input
+            checked={false}
+            name="test_form-4"
+            readOnly={true}
+            type="checkbox"
+            value={2}
+          />
+          Music
+        </div>
+        <div
+          onClick={[Function]}
+        >
+          <input
+            checked={false}
+            name="test_form-4"
+            readOnly={true}
+            type="checkbox"
+            value={3}
+          />
+          Books
+        </div>
+      </div>
+    </div>
+  </div>
   <input
     data-testid="submit"
     onClick={[Function]}

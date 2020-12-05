@@ -97,8 +97,7 @@ const FormComponentBase = ({ form, callback }: { form: FormProps<PlaygroundForm>
                         lastName: form.formValue(PlaygroundForm.LastName),
                         country: countryOptions[form.formValue(PlaygroundForm.Country) as number],
                         gender: genderOptions[form.formValue(PlaygroundForm.Gender) as number],
-                        hobbies: mapIndexToValue(checkboxOptions, parseCheckboxFormValue(form.formValue(PlaygroundForm.Hobbies))).join(","),
-
+                        hobbies: mapIndexToValue(checkboxOptions, parseCheckboxFormValue(form.formValue(PlaygroundForm.Hobbies) as string)).join(","),
                     })
                 }}
             />
