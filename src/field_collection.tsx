@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormFieldComponentProps } from "./yafo"
 import { FormFieldType } from "./types"
-import { toNumber } from "./utils"
+import { toNumber, parseCheckboxFormValue, serializeCheckboxValue } from "./utils"
 
 const styles = {
     fieldWrapper: {
@@ -114,8 +114,49 @@ const radio: React.StatelessComponent<FormFieldComponentProps> =
     )
 }
 
+const checkbox: React.StatelessComponent<FormFieldComponentProps> =
+    ({ inputId, label, value, disabled, onChange, errorMessage, options }: FormFieldComponentProps) =>
+{
+    return (
+        <div style={styles.fieldWrapper}>
+            <div>
+                { label }
+            </div>
+
+            <div style={{opacity: disabled ? ".65" : "1"}}>
+                { (options.checkboxOptions as string[]).map((option, i) => {
+                    const parsedCheckboxValue = parseCheckboxFormValue(value as string)
+                    const checked = parsedCheckboxValue.indexOf(toNumber(i)) > -1
+
+                    return (
+                        <div
+                            key={["checkbox", label, i].join("-")}
+                            onClick={() => !disabled && onChange(serializeCheckboxValue(parsedCheckboxValue, i, !checked))}
+                        >
+                            <input
+                                name={inputId}
+                                type="checkbox"
+                                value={i}
+                                checked={checked}
+                            />
+                            { option }
+                        </div>
+                    )
+                } ) }
+            </div>
+
+            { errorMessage !== "" && (
+                <div style={styles.errorMessage}>
+                    { errorMessage }
+                </div>
+            ) }
+        </div>
+    )
+}
+
 export const fieldCollection = new Map([
     [ FormFieldType.TEXT, text ],
     [ FormFieldType.SELECT, select ],
     [ FormFieldType.RADIO, radio ],
+    [ FormFieldType.CHECKBOX, checkbox ],
 ])

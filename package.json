@@ -8,9 +8,9 @@
     "test": "./node_modules/.bin/jest ./tests",
     "test:watch": "./node_modules/.bin/jest ./tests --watch",
     "build": "./node_modules/.bin/tsc",
-    "playground:build": "npm run playground:update_yafo && npm install",
+    "playground:build": "npm run playground:update_yafo; npm install",
     "playground:start": "cd playground && SKIP_PREFLIGHT_CHECK=true npm run start",
-    "playground:update_yafo": "npm run build && cp -r ./dist ./playground/src/yafo"
+    "playground:update_yafo": "npm run build; mkdir -p ./playground/src/yafo/. ; cp -r ./dist/* ./playground/src/yafo/."
   },
   "author": "",
   "license": "ISC",

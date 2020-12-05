@@ -1,12 +1,15 @@
 import React from 'react';
 import './App.css';
-import { withForm, fieldCollection, FormFieldType, FormValue, FormField, FormProps } from './yafo/yafo.js';
+import { withForm, fieldCollection, FormFieldType, FormValue, FormField, FormProps, parseCheckboxFormValue } from './yafo/yafo.js';
 
-enum PlaygroundForm { FirstName, LastName, Country, Gender }
+enum PlaygroundForm { FirstName, LastName, Country, Gender, Hobbies }
 
 const countryOptions = ["Choose a country", "Brazil", "Germany"]
-
 const genderOptions = ["Male", "Female"]
+const checkboxOptions = ["Soccer", "Movies", "Music", "Books"]
+
+const mapIndexToValue = <T extends unknown>(list: T[], indexList: number[]): T[] =>
+    indexList.map(index => list[index])
 
 const formFields = (): FormField<PlaygroundForm>[] => [
     {
@@ -43,6 +46,15 @@ const formFields = (): FormField<PlaygroundForm>[] => [
         disabled  : false,
         options   : { radioOptions: genderOptions }
     },
+    {
+        id        : PlaygroundForm.Hobbies,
+        label     : "Hobbies",
+        type      : FormFieldType.CHECKBOX,
+        valid     : (chosenHobbies: FormValue) => [ parseCheckboxFormValue(chosenHobbies as string).length > 0, "Please choose at least one hobby." ],
+        initial   : "",
+        disabled  : false,
+        options   : { checkboxOptions: checkboxOptions }
+    },
 ]
 
 const FormComponentBase = ({ form, callback }: { form: FormProps<PlaygroundForm>, callback: Function }) => {
@@ -66,6 +78,10 @@ const FormComponentBase = ({ form, callback }: { form: FormProps<PlaygroundForm>
                 { form.fieldComponents.get(PlaygroundForm.Gender) }
             </div>
 
+            <div id="field-hobbies">
+                { form.fieldComponents.get(PlaygroundForm.Hobbies) }
+            </div>
+
             <input
                 data-testid="submit"
                 type="button"
@@ -81,6 +97,8 @@ const FormComponentBase = ({ form, callback }: { form: FormProps<PlaygroundForm>
                         lastName: form.formValue(PlaygroundForm.LastName),
                         country: countryOptions[form.formValue(PlaygroundForm.Country) as number],
                         gender: genderOptions[form.formValue(PlaygroundForm.Gender) as number],
+                        hobbies: mapIndexToValue(checkboxOptions, parseCheckboxFormValue(form.formValue(PlaygroundForm.Hobbies))).join(","),
+
                     })
                 }}
             />
@@ -114,6 +132,7 @@ function App() {
                     <div>Last Name: { formValues.lastName }</div>
                     <div>Country: { formValues.country }</div>
                     <div>Gender: { formValues.gender }</div>
+                    <div>Hobbies: { formValues.hobbies }</div>
                 </div>
             ) }
 

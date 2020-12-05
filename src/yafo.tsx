@@ -5,6 +5,7 @@ import { FormFieldType } from './types';
 
 export { FormFieldType } from './types';
 export { fieldCollection } from './field_collection';
+export { parseCheckboxFormValue } from './utils';
 
 export type FormFieldOption = string | boolean | number | string[]
 
@@ -142,6 +143,22 @@ const getFieldComponent = <T_FormFieldType extends unknown, T_TargetComponentPro
 
         return (
             <RadioComponent
+                inputId={inputId}
+                label={field.label}
+                value={value}
+                disabled={disabled}
+                onChange={changeValue(index)}
+                errorMessage={errorMessage}
+                options={fieldOptions}
+            />
+        );
+    }
+
+    if (field.type === FormFieldType.CHECKBOX) {
+        const CheckboxComponent: any = fieldCollection.get(FormFieldType.CHECKBOX)
+
+        return (
+            <CheckboxComponent
                 inputId={inputId}
                 label={field.label}
                 value={value}

@@ -39,3 +39,30 @@ export const tupleToMap = <A, B>(tuples: [A, B][], map: Map<A, B>): Map<A, B> =>
 }
 
 export const toNumber = (value: any): number => parseInt(value, 10)
+
+export const parseCheckboxFormValue = (value: string): number[] => {
+    if (value === "")
+        return []
+
+    return value.split(",").map(toNumber)
+}
+
+export const removeNth = <T>(list: T[], iToRemove: number): T[]  =>
+    list.filter((_, i) => i !== iToRemove)
+
+export const serializeCheckboxValue = (checkboxValue: number[], i: number, checked: boolean): string => {
+    const newValue = (() => {
+        const position = checkboxValue.indexOf(i)
+        const exists = position === -1
+
+        if (exists && checked)
+            return checkboxValue.concat(i)
+
+        if (exists && !checked)
+            return removeNth(checkboxValue, position)
+
+        return checkboxValue
+    })()
+
+    return newValue.join(",")
+}
