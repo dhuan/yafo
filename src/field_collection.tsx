@@ -87,21 +87,23 @@ const radio: React.StatelessComponent<FormFieldComponentProps> =
                 { label }
             </div>
 
-            { (options.radioOptions as string[]).map((option, i) => (
-                <div
-                    key={["radio", label, i].join("-")}
-                    onClick={() => onChange(i)}
-                >
-                    <input
-                        name={inputId}
-                        type="radio"
-                        value={i}
-                        checked={i === value}
-                        readOnly={true}
-                    />
-                    { option }
-                </div>
-            )) }
+            <div style={{opacity: disabled ? ".65" : "1"}}>
+                { (options.radioOptions as string[]).map((option, i) => (
+                    <div
+                        key={["radio", label, i].join("-")}
+                        onClick={() => !disabled && onChange(i)}
+                    >
+                        <input
+                            name={inputId}
+                            type="radio"
+                            value={i}
+                            checked={i === value}
+                            readOnly={true}
+                        />
+                        { option }
+                    </div>
+                )) }
+            </div>
 
             { errorMessage !== "" && (
                 <div style={styles.errorMessage}>

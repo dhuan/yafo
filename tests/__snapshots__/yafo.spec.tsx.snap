@@ -104,28 +104,36 @@ exports[`renders 1`] = `
         Gender
       </div>
       <div
-        onClick={[Function]}
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
       >
-        <input
-          checked={false}
-          name="test_form-3"
-          readOnly={true}
-          type="radio"
-          value={0}
-        />
-        Male
-      </div>
-      <div
-        onClick={[Function]}
-      >
-        <input
-          checked={false}
-          name="test_form-3"
-          readOnly={true}
-          type="radio"
-          value={1}
-        />
-        Female
+        <div
+          onClick={[Function]}
+        >
+          <input
+            checked={false}
+            name="test_form-3"
+            readOnly={true}
+            type="radio"
+            value={0}
+          />
+          Male
+        </div>
+        <div
+          onClick={[Function]}
+        >
+          <input
+            checked={false}
+            name="test_form-3"
+            readOnly={true}
+            type="radio"
+            value={1}
+          />
+          Female
+        </div>
       </div>
     </div>
   </div>
