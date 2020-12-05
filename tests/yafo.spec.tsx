@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 import { withForm, FormFieldType, FormProps, fieldCollection, FormField, FormValue } from "../src/yafo"
 import {render, fireEvent, screen} from '@testing-library/react'
 
-enum TestForm { FirstName, LastName, Country }
+enum TestForm { FirstName, LastName, Country, Gender }
 
 const TestComponent = ({ form, callback }: { form: FormProps<TestForm>, callback: Function }) => {
     return (
@@ -23,6 +23,10 @@ const TestComponent = ({ form, callback }: { form: FormProps<TestForm>, callback
                 { form.fieldComponents.get(TestForm.Country) }
             </div>
 
+            <div id="field-gender">
+                { form.fieldComponents.get(TestForm.Gender) }
+            </div>
+
             <input
                 data-testid="submit"
                 type="button"
@@ -31,6 +35,7 @@ const TestComponent = ({ form, callback }: { form: FormProps<TestForm>, callback
                     firstName: form.formValue(TestForm.FirstName),
                     lastName: form.formValue(TestForm.LastName),
                     country: form.formValue(TestForm.Country),
+                    gender: form.formValue(TestForm.Gender),
                 })}
             />
         </div>
@@ -63,11 +68,20 @@ const formFields = (): FormField<TestForm>[] => [
         disabled  : false,
         options   : { selectOptions: ["Choose a country", "Brazil", "Germany"]  }
     },
+    {
+        id        : TestForm.Gender,
+        label     : "Gender",
+        type      : FormFieldType.RADIO,
+        valid     : (chosenGender: FormValue) => [ chosenGender > -1, "Choose a gender!" ],
+        initial   : -1,
+        disabled  : false,
+        options   : { radioOptions: ["Male", "Female"]  }
+    },
 ]
 
 test("renders", () => {
     const Component = withForm(
-        "foobar",
+        "test_form",
         fieldCollection,
         formFields,
         TestComponent,
@@ -79,7 +93,7 @@ test("renders", () => {
 
 test("get values", async () => {
     const Component = withForm(
-        "foobar",
+        "test_form",
         fieldCollection,
         formFields,
         TestComponent,
@@ -102,11 +116,14 @@ test("get values", async () => {
         target: { value: "2" }
     });
 
+    fireEvent.click(container.querySelectorAll("#field-gender input[type=radio]")[1]);
+
     fireEvent.click(screen.getByTestId("submit"))
 
     expect(spy).toHaveBeenCalledWith({
         firstName: "My first name",
         lastName: "My last name",
         country: 2,
+        gender: 1,
     })
 })

@@ -2,9 +2,11 @@ import React from 'react';
 import './App.css';
 import { withForm, fieldCollection, FormFieldType, FormValue, FormField, FormProps } from './yafo/yafo.js';
 
-enum PlaygroundForm { FirstName, LastName, Country }
+enum PlaygroundForm { FirstName, LastName, Country, Gender }
 
 const countryOptions = ["Choose a country", "Brazil", "Germany"]
+
+const genderOptions = ["Male", "Female"]
 
 const formFields = (): FormField<PlaygroundForm>[] => [
     {
@@ -32,6 +34,15 @@ const formFields = (): FormField<PlaygroundForm>[] => [
         disabled  : false,
         options   : { selectOptions: countryOptions }
     },
+    {
+        id        : PlaygroundForm.Gender,
+        label     : "Gender",
+        type      : FormFieldType.RADIO,
+        valid     : (chosenGender: FormValue) => [ chosenGender > -1, "Please chose a gender." ],
+        initial   : -1,
+        disabled  : false,
+        options   : { radioOptions: genderOptions }
+    },
 ]
 
 const FormComponentBase = ({ form, callback }: { form: FormProps<PlaygroundForm>, callback: Function }) => {
@@ -51,6 +62,10 @@ const FormComponentBase = ({ form, callback }: { form: FormProps<PlaygroundForm>
                 { form.fieldComponents.get(PlaygroundForm.Country) }
             </div>
 
+            <div id="field-gender">
+                { form.fieldComponents.get(PlaygroundForm.Gender) }
+            </div>
+
             <input
                 data-testid="submit"
                 type="button"
@@ -65,6 +80,7 @@ const FormComponentBase = ({ form, callback }: { form: FormProps<PlaygroundForm>
                         firstName: form.formValue(PlaygroundForm.FirstName),
                         lastName: form.formValue(PlaygroundForm.LastName),
                         country: countryOptions[form.formValue(PlaygroundForm.Country) as number],
+                        gender: genderOptions[form.formValue(PlaygroundForm.Gender) as number],
                     })
                 }}
             />
@@ -97,6 +113,7 @@ function App() {
                     <div>First Name: { formValues.firstName }</div>
                     <div>Last Name: { formValues.lastName }</div>
                     <div>Country: { formValues.country }</div>
+                    <div>Gender: { formValues.gender }</div>
                 </div>
             ) }
 
