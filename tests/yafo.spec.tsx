@@ -1,12 +1,12 @@
 import '@testing-library/jest-dom'
 import React from "react"
 import renderer from 'react-test-renderer';
-import { withForm, FormFieldType, FormProps, fieldCollection } from "../src/yafo"
+import { withForm, FormFieldType, FormProps, fieldCollection, FormField, FormValue } from "../src/yafo"
 import {render, fireEvent, screen} from '@testing-library/react'
 
 enum TestForm { FirstName, LastName, Country }
 
-const TestComponent = ({ form, callback }: { form: FormProps, callback: Function }) => {
+const TestComponent = ({ form, callback }: { form: FormProps<TestForm>, callback: Function }) => {
     return (
         <div>
             <h1>My Form</h1>
@@ -37,7 +37,7 @@ const TestComponent = ({ form, callback }: { form: FormProps, callback: Function
     );
 }
 
-const formFields = (): FormField<TestForm> => [
+const formFields = (): FormField<TestForm>[] => [
     {
         id        : TestForm.FirstName,
         label     : "First name",

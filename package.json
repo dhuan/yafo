@@ -7,7 +7,9 @@
   "scripts": {
     "test": "./node_modules/.bin/jest ./tests",
     "test:watch": "./node_modules/.bin/jest ./tests --watch",
-    "build": "./node_modules/.bin/tsc"
+    "build": "./node_modules/.bin/tsc",
+    "playground:build": "npm run build && cp -r ./dist ./playground/yafo && cd playground && npm install",
+    "playground:start": "cd playground && SKIP_PREFLIGHT_CHECK=true npm run start"
   },
   "author": "",
   "license": "ISC",
