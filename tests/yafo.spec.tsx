@@ -40,6 +40,7 @@ const TestComponent = ({ form, callback }: { form: FormProps<TestForm>, callback
                     lastName: form.formValue(TestForm.LastName),
                     country: form.formValue(TestForm.Country),
                     gender: form.formValue(TestForm.Gender),
+                    hobbies: form.formValue(TestForm.Hobbies),
                 })}
             />
         </div>
@@ -131,6 +132,10 @@ test("get values", async () => {
 
     fireEvent.click(container.querySelectorAll("#field-gender input[type=radio]")[1]);
 
+    fireEvent.click(container.querySelectorAll("#field-hobbies input[type=checkbox]")[1]);
+
+    fireEvent.click(container.querySelectorAll("#field-hobbies input[type=checkbox]")[2]);
+
     fireEvent.click(screen.getByTestId("submit"))
 
     expect(spy).toHaveBeenCalledWith({
@@ -138,5 +143,6 @@ test("get values", async () => {
         lastName: "My last name",
         country: 2,
         gender: 1,
+        hobbies: "1,2",
     })
 })
