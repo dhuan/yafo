@@ -106,71 +106,22 @@ const getFieldComponent = <T_FormFieldType extends unknown, T_TargetComponentPro
 
     const inputId = inputIds[index]
 
-    if (field.type === FormFieldType.TEXT) {
-        const TextComponent: any = fieldCollection.get(FormFieldType.TEXT)
+    const Component: any = fieldCollection.get(field.type) as any
 
-        return (
-            <TextComponent
-                inputId={inputId}
-                label={field.label}
-                value={value}
-                disabled={disabled}
-                onChange={changeValue(index)}
-                errorMessage={errorMessage}
-                options={fieldOptions}
-            />
-        );
-    }
+    if (!Component)
+        throw new Error(`Could not get form field component for ${field.type}`);
 
-    if (field.type === FormFieldType.SELECT) {
-        const SelectComponent: any = fieldCollection.get(FormFieldType.SELECT)
-
-        return (
-            <SelectComponent
-                inputId={inputId}
-                label={field.label}
-                value={value}
-                disabled={disabled}
-                onChange={changeValue(index)}
-                errorMessage={errorMessage}
-                options={fieldOptions}
-            />
-        );
-    }
-
-    if (field.type === FormFieldType.RADIO) {
-        const RadioComponent: any = fieldCollection.get(FormFieldType.RADIO)
-
-        return (
-            <RadioComponent
-                inputId={inputId}
-                label={field.label}
-                value={value}
-                disabled={disabled}
-                onChange={changeValue(index)}
-                errorMessage={errorMessage}
-                options={fieldOptions}
-            />
-        );
-    }
-
-    if (field.type === FormFieldType.CHECKBOX) {
-        const CheckboxComponent: any = fieldCollection.get(FormFieldType.CHECKBOX)
-
-        return (
-            <CheckboxComponent
-                inputId={inputId}
-                label={field.label}
-                value={value}
-                disabled={disabled}
-                onChange={changeValue(index)}
-                errorMessage={errorMessage}
-                options={fieldOptions}
-            />
-        );
-    }
-
-    throw new Error(`Could not get form field component for ${field.type}`);
+    return (
+        <Component
+            inputId={inputId}
+            label={field.label}
+            value={value}
+            disabled={disabled as any}
+            onChange={changeValue(index)}
+            errorMessage={errorMessage}
+            options={fieldOptions}
+        />
+    ) as any;
 }
 
 const toFieldComponents = <T_FormFieldType extends unknown, T_TargetComponentProps extends unknown>(
