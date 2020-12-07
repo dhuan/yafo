@@ -6,7 +6,7 @@ import {render, fireEvent, screen} from '@testing-library/react'
 
 enum TestForm { FirstName, LastName, Country, Gender, Hobbies }
 
-const TestComponent = ({ form, callback }: { form: FormProps<TestForm>, callback: Function }) => {
+const TestComponent = ({ form, callback }: { form: FormProps<TestForm>, callback: VoidFunction }) => {
     return (
         <div>
             <h1>My Form</h1>
