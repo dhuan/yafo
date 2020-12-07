@@ -1,63 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { replaceNth, allEqual, unzip } from './utils';
 import { fieldCollection } from './field_collection';
-import { FormFieldType } from './types';
 
-export { FormFieldType } from './types';
+import {
+    FieldValidationResult,
+    FieldValidator,
+    FormField,
+    FieldCollection,
+    FormValueFunc,
+    FormValue,
+    FormProps,
+} from './types';
+
+export {
+    FormFieldType,
+    FormFieldComponentProps,
+    FormFieldOption,
+    FormFieldOptions,
+    FieldValidationResult,
+    FieldValidator,
+    FormField,
+    OnChangeFormValueFunc,
+    FieldCollection,
+    FormValueFunc,
+    ValidateFormFunc,
+    FormValue,
+    FormProps,
+    FieldComponent,
+} from './types';
+
 export { fieldCollection } from './field_collection';
 export { parseCheckboxFormValue } from './utils';
-
-export type FormFieldOption = string | boolean | number | string[]
-
-export type FormFieldOptions = Record<string, FormFieldOption>
-
-export type FieldValidationResult = [ boolean, string ]
-
-export type FieldValidator = <T>(value: FormValue, formValue: (id: T) => FormValue) => FieldValidationResult
-
-export type FormField<T> = {
-    id         : T
-    label      : string
-    type       : FormFieldType
-    valid      : FieldValidator
-    initial    : FormValue
-    options?   : FormFieldOptions
-    disabled?  : boolean
-}
-
-export type OnChangeFormValueFunc = (newValue: FormValue) => void
-
-export type FormFieldComponentProps = {
-    inputId        : string
-    label          : string
-    value          : FormValue
-    disabled       : boolean
-    onChange       : OnChangeFormValueFunc
-    errorMessage   : string
-    options        : FormFieldOptions
-}
-
-export type FieldCollection = Map<FormFieldType, React.StatelessComponent<FormFieldComponentProps>>
-
-export type FormValueFunc = <T>(id: T) => FormValue
-
-export type ValidateFormFunc = () => boolean
-
-export type FormValue = string | number
-
-export type FormProps<T> =  {
-    fieldComponents        : Map<T, React.ReactElement>
-    dirty                  : boolean
-    validateForm           : () => boolean
-    formIsValid            : boolean
-    formValue              : FormValueFunc
-    showFormErrorMessages  : (visible: boolean) => void
-    disableForm            : VoidFunction
-    enableForm             : VoidFunction
-    setValues              : (values: Map<T, FormValue>) => void
-    setEnterHandler        : (window: any, handler: VoidFunction) => void
-    getInvalidFields       : () => T[]
-}
 
 const changeStateValue = <T extends unknown>(field: FormField<T>, state: FormState, formValue: FormValueFunc) => (index: number) => (newValue: FormValue): void => {
     const { values, setValues, validation, setValidation, dirty, setDirty, errorMessage, setErrorMessage } = state

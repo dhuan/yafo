@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormFieldComponentProps } from "./yafo"
-import { FormFieldType } from "./types"
+import { FormFieldType, FieldComponent, FieldCollection } from "./types"
 import { toNumber, parseCheckboxFormValue, serializeCheckboxValue } from "./utils"
 
 const styles = {
@@ -13,7 +13,7 @@ const styles = {
     }
 }
 
-const text: React.StatelessComponent<FormFieldComponentProps> =
+const text: FieldComponent =
     ({ inputId, label, value, disabled, onChange, errorMessage, options }: FormFieldComponentProps) =>
 {
     return (
@@ -41,12 +41,9 @@ const text: React.StatelessComponent<FormFieldComponentProps> =
     )
 }
 
-const select: React.StatelessComponent<FormFieldComponentProps> =
+const select: FieldComponent =
     ({ inputId, label, value, disabled, onChange, errorMessage, options }: FormFieldComponentProps) =>
 {
-    const selectProps = {
-    }
-
     return (
         <div style={styles.fieldWrapper}>
             <div>
@@ -78,7 +75,7 @@ const select: React.StatelessComponent<FormFieldComponentProps> =
     )
 }
 
-const radio: React.StatelessComponent<FormFieldComponentProps> =
+const radio: FieldComponent =
     ({ inputId, label, value, disabled, onChange, errorMessage, options }: FormFieldComponentProps) =>
 {
     return (
@@ -114,7 +111,7 @@ const radio: React.StatelessComponent<FormFieldComponentProps> =
     )
 }
 
-const checkbox: React.StatelessComponent<FormFieldComponentProps> =
+const checkbox: FieldComponent =
     ({ inputId, label, value, disabled, onChange, errorMessage, options }: FormFieldComponentProps) =>
 {
     return (
@@ -155,7 +152,7 @@ const checkbox: React.StatelessComponent<FormFieldComponentProps> =
     )
 }
 
-export const fieldCollection = new Map([
+export const fieldCollection: FieldCollection = new Map([
     [ FormFieldType.TEXT, text ],
     [ FormFieldType.SELECT, select ],
     [ FormFieldType.RADIO, radio ],
