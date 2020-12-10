@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 import React from "react"
 import renderer from 'react-test-renderer';
-import {fireEvent, screen} from '@testing-library/react'
+import {fireEvent, screen, act} from '@testing-library/react'
 import { renderTestForm, getTestComponent, TestForm } from './utils';
 
 test("renders", () => {
@@ -11,19 +11,9 @@ test("renders", () => {
 })
 
 test("get values", async () => {
-    const { change, click, clickNth, spy } = renderTestForm()
+    const { click, spy, fillFormWithValidFields } = renderTestForm()
 
-    change("#field-first-name input[type=text]", "My first name");
-
-    change("#field-last-name input[type=text]", "My last name");
-
-    change("#field-country select", "2");
-
-    clickNth("#field-gender input[type=radio]", 1);
-
-    clickNth("#field-hobbies input[type=checkbox]", 1);
-
-    clickNth("#field-hobbies input[type=checkbox]", 2);
+    fillFormWithValidFields()
 
     click("[data-testid=submit]")
 
@@ -55,5 +45,35 @@ describe("Form Props", () => {
         change("#field-first-name input[type=text]", "My first name")
 
         expect(form().formValue(TestForm.FirstName)).toEqual("My first name");
+    })
+
+    test("getInvalidFields", async () => {
+        const { form, change } = renderTestForm()
+
+        expect(form().getInvalidFields()).toEqual([
+            TestForm.FirstName,
+            TestForm.LastName,
+            TestForm.Country,
+            TestForm.Gender,
+            TestForm.Hobbies,
+        ])
+
+        change("#field-first-name input[type=text]", "Some invalid name 123")
+
+        expect(form().getInvalidFields().indexOf(TestForm.FirstName)).toBeGreaterThan(-1)
+
+        change("#field-first-name input[type=text]", "First Name")
+
+        expect(form().getInvalidFields().indexOf(TestForm.FirstName)).toEqual(-1)
+    })
+
+    test("formIsValid", async () => {
+        const { form, fillFormWithValidFields } = renderTestForm()
+
+        expect(form().formIsValid).toEqual(false)
+
+        fillFormWithValidFields()
+
+        expect(form().formIsValid).toEqual(true)
     })
 })

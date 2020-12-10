@@ -54,7 +54,7 @@ const formFields = (): FormField<TestForm>[] => [
         id        : TestForm.FirstName,
         label     : "First name",
         type      : FormFieldType.TEXT,
-        valid     : (text: FormValue) => [ /[a-zA-Z{3,10}]/.test(text as string), "Wrong first name, pal!" ],
+        valid     : (text: FormValue) => [ /^[a-zA-Z\s]{3,20}$/.test(text as string), "Wrong first name, pal!" ],
         initial   : "",
         disabled  : false,
     },
@@ -62,7 +62,7 @@ const formFields = (): FormField<TestForm>[] => [
         id        : TestForm.LastName,
         label     : "First name",
         type      : FormFieldType.TEXT,
-        valid     : (text: FormValue) => [ /[a-zA-Z{3,10}]/.test(text as string), "Wrong first name, pal!" ],
+        valid     : (text: FormValue) => [ /^[a-zA-Z\s]{3,20}$/.test(text as string), "Wrong first name, pal!" ],
         initial   : "",
         disabled  : false,
     },
@@ -115,6 +115,22 @@ export const getTestComponent = () =>
         { errorMessagesVisible: false }
     )
 
+const fillFormWithValidFields = (change, click, clickNth) => () => {
+    change("#field-first-name input[type=text]", "My first name");
+
+    change("#field-last-name input[type=text]", "My last name");
+
+    change("#field-country select", "2");
+
+    clickNth("#field-gender input[type=radio]", 1);
+
+    clickNth("#field-hobbies input[type=checkbox]", 1);
+
+    clickNth("#field-hobbies input[type=checkbox]", 2);
+
+    click("[data-testid=submit]")
+}
+
 export const renderTestForm = () => {
     const Component = getTestComponent()
 
@@ -129,10 +145,16 @@ export const renderTestForm = () => {
     const { container } = render(<Component callback={spy} getForm={getForm} />)
 
     return {
+        container,
         form: () => form,
         change: change(container),
         click: click(container),
         clickNth: clickNth(container),
         spy: () => spy,
+        fillFormWithValidFields: fillFormWithValidFields(
+            change(container),
+            click(container),
+            clickNth(container),
+        ),
     }
 }
