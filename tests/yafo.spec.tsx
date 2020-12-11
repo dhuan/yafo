@@ -76,4 +76,24 @@ describe("Form Props", () => {
 
         expect(form().formIsValid).toEqual(true)
     })
+
+    test("showFormErrorMessages", async () => {
+        const { form, container } = renderTestForm()
+
+        const FIRST_NAME_ERROR_ELEMENT_SELECTOR = "div#error_message_test_form-1"
+
+        act(() => {
+            expect(container.querySelectorAll(FIRST_NAME_ERROR_ELEMENT_SELECTOR).length).toEqual(0)
+
+            form().showFormErrorMessages(true)
+        })
+
+        expect(container.querySelectorAll(FIRST_NAME_ERROR_ELEMENT_SELECTOR).length).toEqual(1)
+
+        act(() => {
+            form().showFormErrorMessages(false)
+        })
+
+        expect(container.querySelectorAll(FIRST_NAME_ERROR_ELEMENT_SELECTOR).length).toEqual(0)
+    })
 })

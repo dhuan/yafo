@@ -13,6 +13,19 @@ const styles = {
     }
 }
 
+const idForErrorMessageComponent = (inputId: string): string => `error_message_${inputId}`
+
+const errorMessageComponent = (errorMessage: string, inputId: string): React.ReactElement | null => {
+    if (errorMessage === "")
+        return null
+
+    return (
+        <div id={idForErrorMessageComponent(inputId)} style={styles.errorMessage}>
+            { errorMessage }
+        </div>
+    )
+}
+
 const text: FieldComponent =
     ({ inputId, label, value, disabled, onChange, errorMessage, options }: FormFieldComponentProps) =>
 {
@@ -32,11 +45,7 @@ const text: FieldComponent =
                 />
             </div>
 
-            { errorMessage !== "" && (
-                <div style={styles.errorMessage}>
-                    { errorMessage }
-                </div>
-            ) }
+            { errorMessageComponent(errorMessage, inputId) }
         </div>
     )
 }
@@ -66,11 +75,7 @@ const select: FieldComponent =
                 )) }
             </select>
 
-            { errorMessage !== "" && (
-                <div style={styles.errorMessage}>
-                    { errorMessage }
-                </div>
-            ) }
+            { errorMessageComponent(errorMessage, inputId) }
         </div>
     )
 }
@@ -102,11 +107,7 @@ const radio: FieldComponent =
                 )) }
             </div>
 
-            { errorMessage !== "" && (
-                <div style={styles.errorMessage}>
-                    { errorMessage }
-                </div>
-            ) }
+            { errorMessageComponent(errorMessage, inputId) }
         </div>
     )
 }
@@ -143,11 +144,7 @@ const checkbox: FieldComponent =
                 } ) }
             </div>
 
-            { errorMessage !== "" && (
-                <div style={styles.errorMessage}>
-                    { errorMessage }
-                </div>
-            ) }
+            { errorMessageComponent(errorMessage, inputId) }
         </div>
     )
 }
