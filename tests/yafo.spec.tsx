@@ -96,4 +96,24 @@ describe("Form Props", () => {
 
         expect(container.querySelectorAll(FIRST_NAME_ERROR_ELEMENT_SELECTOR).length).toEqual(0)
     })
+
+    test("enableForm and disableForm", async () => {
+        const FIRST_NAME_INPUT_ELEMENT_SELECTOR = "#test_form-0"
+
+        const { form, container } = renderTestForm()
+
+        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).disabled).toEqual(false)
+
+        act(() => {
+            form().disableForm()
+        })
+
+        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).disabled).toEqual(true)
+
+        act(() => {
+            form().enableForm()
+        })
+
+        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).disabled).toEqual(false)
+    })
 })
