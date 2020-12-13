@@ -38,5 +38,8 @@
   },
   "dependencies": {
     "rollup": "^2.33.1"
-  }
+  },
+  "files": [
+    "dist/*"
+  ]
 }
