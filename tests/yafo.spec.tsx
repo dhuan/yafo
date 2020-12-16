@@ -116,4 +116,26 @@ describe("Form Props", () => {
 
         expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).disabled).toEqual(false)
     })
+
+    test("setValues", async () => {
+        const { form, container } = renderTestForm()
+
+        const FIRST_NAME_INPUT_ELEMENT_SELECTOR = "#test_form_field_0"
+        const LAST_NAME_INPUT_ELEMENT_SELECTOR = "#test_form_field_1"
+
+        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).value).toEqual("")
+
+        expect(container.querySelector(LAST_NAME_INPUT_ELEMENT_SELECTOR).value).toEqual("")
+
+        act(() => {
+            form().setValues(new Map([
+                [ TestForm.FirstName, "Some first name" ],
+                [ TestForm.LastName, "Some last name" ],
+            ]))
+        })
+
+        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).value).toEqual("Some first name")
+
+        expect(container.querySelector(LAST_NAME_INPUT_ELEMENT_SELECTOR).value).toEqual("Some last name")
+    })
 })
