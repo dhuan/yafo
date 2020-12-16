@@ -250,7 +250,7 @@ const buildInputIds = (formName: string, length: number, index = 0): any => {
     if (length === index - 1)
         return []
 
-    return [ [ formName, index ].join("-") ].concat(buildInputIds(formName, length, index + 1))
+    return [ [ formName, "field", index ].join("_") ].concat(buildInputIds(formName, length, index + 1))
 }
 
 const getInvalidFields = <T extends unknown>(fields: FormField<T>[], validation: boolean[], i = 0) => (): T[] => {

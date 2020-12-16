@@ -21,7 +21,7 @@ exports[`renders 1`] = `
       <div>
         <input
           disabled={false}
-          id="test_form-0"
+          id="test_form_field_0"
           onChange={[Function]}
           type="text"
           value=""
@@ -45,7 +45,7 @@ exports[`renders 1`] = `
       <div>
         <input
           disabled={false}
-          id="test_form-1"
+          id="test_form_field_1"
           onChange={[Function]}
           type="text"
           value=""
@@ -68,7 +68,7 @@ exports[`renders 1`] = `
       </div>
       <select
         disabled={false}
-        id="test_form-2"
+        id="test_form_field_2"
         onChange={[Function]}
         value={0}
       >
@@ -115,7 +115,7 @@ exports[`renders 1`] = `
         >
           <input
             checked={false}
-            name="test_form-3"
+            name="test_form_field_3"
             readOnly={true}
             type="radio"
             value={0}
@@ -127,7 +127,7 @@ exports[`renders 1`] = `
         >
           <input
             checked={false}
-            name="test_form-3"
+            name="test_form_field_3"
             readOnly={true}
             type="radio"
             value={1}
@@ -162,7 +162,7 @@ exports[`renders 1`] = `
         >
           <input
             checked={false}
-            name="test_form-4"
+            name="test_form_field_4"
             readOnly={true}
             type="checkbox"
             value={0}
@@ -174,7 +174,7 @@ exports[`renders 1`] = `
         >
           <input
             checked={false}
-            name="test_form-4"
+            name="test_form_field_4"
             readOnly={true}
             type="checkbox"
             value={1}
@@ -186,7 +186,7 @@ exports[`renders 1`] = `
         >
           <input
             checked={false}
-            name="test_form-4"
+            name="test_form_field_4"
             readOnly={true}
             type="checkbox"
             value={2}
@@ -198,7 +198,7 @@ exports[`renders 1`] = `
         >
           <input
             checked={false}
-            name="test_form-4"
+            name="test_form_field_4"
             readOnly={true}
             type="checkbox"
             value={3}

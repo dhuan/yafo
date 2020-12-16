@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 import React from "react"
 import renderer from 'react-test-renderer';
-import {fireEvent, screen, act} from '@testing-library/react'
+import {act} from '@testing-library/react'
 import { renderTestForm, getTestComponent, TestForm } from './utils';
 
 test("renders", () => {
@@ -80,7 +80,7 @@ describe("Form Props", () => {
     test("showFormErrorMessages", async () => {
         const { form, container } = renderTestForm()
 
-        const FIRST_NAME_ERROR_ELEMENT_SELECTOR = "div#error_message_test_form-1"
+        const FIRST_NAME_ERROR_ELEMENT_SELECTOR = "div#error_message_test_form_field_1"
 
         act(() => {
             expect(container.querySelectorAll(FIRST_NAME_ERROR_ELEMENT_SELECTOR).length).toEqual(0)
@@ -98,7 +98,7 @@ describe("Form Props", () => {
     })
 
     test("enableForm and disableForm", async () => {
-        const FIRST_NAME_INPUT_ELEMENT_SELECTOR = "#test_form-0"
+        const FIRST_NAME_INPUT_ELEMENT_SELECTOR = "#test_form_field_0"
 
         const { form, container } = renderTestForm()
 
