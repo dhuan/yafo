@@ -87,7 +87,7 @@ const FormComponentBase = ({ form, callback }: { form: FormProps<PlaygroundForm>
                 type="button"
                 value="Submit Form"
                 onClick={() => {
-                    form.showFormErrorMessages(true)
+                    form.showErrorMessages()
 
                     if (!form.formIsValid)
                         return

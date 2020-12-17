@@ -44,7 +44,8 @@ export type FormProps<T> =  {
     validateForm           : () => boolean
     formIsValid            : boolean
     formValue              : FormValueFunc
-    showFormErrorMessages  : (visible: boolean) => void
+    showErrorMessages      : () => void
+    hideErrorMessages      : () => void
     disableForm            : VoidFunction
     enableForm             : VoidFunction
     setValues              : (values: Map<T, FormValue>) => void

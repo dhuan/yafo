@@ -192,9 +192,10 @@ export type FormOptions<T_FormFieldType, T_TargetComponentProps> = {
 
 const showFormErrorMessages = <T_FormFieldType, T_TargetComponentProps>(
     options       : FormOptions<T_FormFieldType, T_TargetComponentProps>,
-    setOptions    : (options: FormOptions<T_FormFieldType, T_TargetComponentProps>) => void
-) => (errorMessagesVisible: boolean): void => {
-    setOptions({ ...options, errorMessagesVisible });
+    setOptions    : (options: FormOptions<T_FormFieldType, T_TargetComponentProps>) => void,
+    visible       : boolean,
+) => (): void => {
+    setOptions({ ...options, errorMessagesVisible: visible });
 }
 
 const disableForm = (setFormActive: (active: boolean) => void) => () => 
@@ -321,7 +322,8 @@ export const withForm = <T extends unknown, TargetComponentProps extends unknown
             validateForm           : validateForm(fields, state, getFormValue),
             formIsValid            : allEqual<boolean>(true, validation),
             formValue              : getFormValue,
-            showFormErrorMessages  : showFormErrorMessages(options, setOptions),
+            showErrorMessages      : showFormErrorMessages(options, setOptions, true),
+            hideErrorMessages      : showFormErrorMessages(options, setOptions, false),
             disableForm            : disableForm(setFormActive),
             enableForm             : enableForm(setFormActive),
             setValues              : setFormValues<T>(fields, state, setValueSetManuallyTime),
