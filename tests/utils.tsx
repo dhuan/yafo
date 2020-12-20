@@ -38,11 +38,11 @@ const TestComponent = ({ form, callback, getForm }: { form: FormProps<TestForm>,
                 type="button"
                 value="Click me"
                 onClick={() => callback({
-                    firstName: form.formValue(TestForm.FirstName),
-                    lastName: form.formValue(TestForm.LastName),
-                    country: form.formValue(TestForm.Country),
-                    gender: form.formValue(TestForm.Gender),
-                    hobbies: form.formValue(TestForm.Hobbies),
+                    firstName: form.value(TestForm.FirstName),
+                    lastName: form.value(TestForm.LastName),
+                    country: form.value(TestForm.Country),
+                    gender: form.value(TestForm.Gender),
+                    hobbies: form.value(TestForm.Hobbies),
                 })}
             />
         </div>

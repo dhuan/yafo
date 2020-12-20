@@ -26,8 +26,8 @@ test("get values", async () => {
     })
 })
 
-describe("Form Props", () => {
-    test("dirty", async () => {
+describe("Form Properties", () => {
+    test("form.dirty", async () => {
         const { form, change } = renderTestForm()
 
         expect(form().dirty).toEqual(false);
@@ -37,87 +37,29 @@ describe("Form Props", () => {
         expect(form().dirty).toEqual(true);
     })
 
-    test("formValue", async () => {
+    test("form.value", async () => {
         const { form, change } = renderTestForm()
 
-        expect(form().formValue(TestForm.FirstName)).toEqual("");
+        expect(form().value(TestForm.FirstName)).toEqual("");
 
         change("#field-first-name input[type=text]", "My first name")
 
-        expect(form().formValue(TestForm.FirstName)).toEqual("My first name");
+        expect(form().value(TestForm.FirstName)).toEqual("My first name");
     })
 
-    test("getInvalidFields", async () => {
-        const { form, change } = renderTestForm()
-
-        expect(form().getInvalidFields()).toEqual([
-            TestForm.FirstName,
-            TestForm.LastName,
-            TestForm.Country,
-            TestForm.Gender,
-            TestForm.Hobbies,
-        ])
-
-        change("#field-first-name input[type=text]", "Some invalid name 123")
-
-        expect(form().getInvalidFields().indexOf(TestForm.FirstName)).toBeGreaterThan(-1)
-
-        change("#field-first-name input[type=text]", "First Name")
-
-        expect(form().getInvalidFields().indexOf(TestForm.FirstName)).toEqual(-1)
-    })
-
-    test("formIsValid", async () => {
+    test("form.valid", async () => {
         const { form, fillFormWithValidFields } = renderTestForm()
 
-        expect(form().formIsValid).toEqual(false)
+        expect(form().valid).toEqual(false)
 
         fillFormWithValidFields()
 
-        expect(form().formIsValid).toEqual(true)
+        expect(form().valid).toEqual(true)
     })
+})
 
-    test("showErrorMessages and hideErrorMessages", async () => {
-        const { form, container } = renderTestForm()
-
-        const FIRST_NAME_ERROR_ELEMENT_SELECTOR = "div#error_message_test_form_field_1"
-
-        expect(container.querySelectorAll(FIRST_NAME_ERROR_ELEMENT_SELECTOR).length).toEqual(0)
-
-        act(() => {
-            form().showErrorMessages()
-        })
-
-        expect(container.querySelectorAll(FIRST_NAME_ERROR_ELEMENT_SELECTOR).length).toEqual(1)
-
-        act(() => {
-            form().hideErrorMessages()
-        })
-
-        expect(container.querySelectorAll(FIRST_NAME_ERROR_ELEMENT_SELECTOR).length).toEqual(0)
-    })
-
-    test("enableForm and disableForm", async () => {
-        const FIRST_NAME_INPUT_ELEMENT_SELECTOR = "#test_form_field_0"
-
-        const { form, container } = renderTestForm()
-
-        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).disabled).toEqual(false)
-
-        act(() => {
-            form().disableForm()
-        })
-
-        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).disabled).toEqual(true)
-
-        act(() => {
-            form().enableForm()
-        })
-
-        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).disabled).toEqual(false)
-    })
-
-    test("setValues", async () => {
+describe("Form Methods", () => {
+    test("form.setValues", async () => {
         const { form, container } = renderTestForm()
 
         const FIRST_NAME_INPUT_ELEMENT_SELECTOR = "#test_form_field_0"
@@ -137,5 +79,65 @@ describe("Form Props", () => {
         expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).value).toEqual("Some first name")
 
         expect(container.querySelector(LAST_NAME_INPUT_ELEMENT_SELECTOR).value).toEqual("Some last name")
+    })
+
+    test("form.enable and form.disable", async () => {
+        const FIRST_NAME_INPUT_ELEMENT_SELECTOR = "#test_form_field_0"
+
+        const { form, container } = renderTestForm()
+
+        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).disabled).toEqual(false)
+
+        act(() => {
+            form().disable()
+        })
+
+        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).disabled).toEqual(true)
+
+        act(() => {
+            form().enable()
+        })
+
+        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).disabled).toEqual(false)
+    })
+
+    test("form.showErrorMessages and form.hideErrorMessages", async () => {
+        const { form, container } = renderTestForm()
+
+        const FIRST_NAME_ERROR_ELEMENT_SELECTOR = "div#error_message_test_form_field_1"
+
+        expect(container.querySelectorAll(FIRST_NAME_ERROR_ELEMENT_SELECTOR).length).toEqual(0)
+
+        act(() => {
+            form().showErrorMessages()
+        })
+
+        expect(container.querySelectorAll(FIRST_NAME_ERROR_ELEMENT_SELECTOR).length).toEqual(1)
+
+        act(() => {
+            form().hideErrorMessages()
+        })
+
+        expect(container.querySelectorAll(FIRST_NAME_ERROR_ELEMENT_SELECTOR).length).toEqual(0)
+    })
+
+    test("form.getInvalidFields", async () => {
+        const { form, change } = renderTestForm()
+
+        expect(form().getInvalidFields()).toEqual([
+            TestForm.FirstName,
+            TestForm.LastName,
+            TestForm.Country,
+            TestForm.Gender,
+            TestForm.Hobbies,
+        ])
+
+        change("#field-first-name input[type=text]", "Some invalid name 123")
+
+        expect(form().getInvalidFields().indexOf(TestForm.FirstName)).toBeGreaterThan(-1)
+
+        change("#field-first-name input[type=text]", "First Name")
+
+        expect(form().getInvalidFields().indexOf(TestForm.FirstName)).toEqual(-1)
     })
 })

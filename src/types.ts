@@ -41,13 +41,13 @@ export type FormValue = string | number
 export type FormProps<T> =  {
     fieldComponents        : Map<T, React.ReactElement>
     dirty                  : boolean
-    validateForm           : () => boolean
-    formIsValid            : boolean
-    formValue              : FormValueFunc
+    validate               : ValidateFormFunc
+    valid                  : boolean
+    value                  : FormValueFunc
     showErrorMessages      : () => void
     hideErrorMessages      : () => void
-    disableForm            : VoidFunction
-    enableForm             : VoidFunction
+    disable                : VoidFunction
+    enable                 : VoidFunction
     setValues              : (values: Map<T, FormValue>) => void
     setEnterHandler        : (window: any, handler: VoidFunction) => void
     getInvalidFields       : () => T[]

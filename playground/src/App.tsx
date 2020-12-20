@@ -89,15 +89,15 @@ const FormComponentBase = ({ form, callback }: { form: FormProps<PlaygroundForm>
                 onClick={() => {
                     form.showErrorMessages()
 
-                    if (!form.formIsValid)
+                    if (!form.valid)
                         return
 
                     callback({
-                        firstName: form.formValue(PlaygroundForm.FirstName),
-                        lastName: form.formValue(PlaygroundForm.LastName),
-                        country: countryOptions[form.formValue(PlaygroundForm.Country) as number],
-                        gender: genderOptions[form.formValue(PlaygroundForm.Gender) as number],
-                        hobbies: mapIndexToValue(checkboxOptions, parseCheckboxFormValue(form.formValue(PlaygroundForm.Hobbies) as string)).join(","),
+                        firstName: form.value(PlaygroundForm.FirstName),
+                        lastName: form.value(PlaygroundForm.LastName),
+                        country: countryOptions[form.value(PlaygroundForm.Country) as number],
+                        gender: genderOptions[form.value(PlaygroundForm.Gender) as number],
+                        hobbies: mapIndexToValue(checkboxOptions, parseCheckboxFormValue(form.value(PlaygroundForm.Hobbies) as string)).join(","),
                     })
                 }}
             />
