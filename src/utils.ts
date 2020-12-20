@@ -38,7 +38,12 @@ export const tupleToMap = <A, B>(tuples: [A, B][], map: Map<A, B>): Map<A, B> =>
     return tupleToMap(tuples.slice(1), map);
 }
 
-export const toNumber = (value: any): number => parseInt(value, 10)
+export const toNumber = (value: string | number): number => {
+    if (typeof value === "number")
+        return value
+
+    return parseInt(value, 10)
+}
 
 export const parseCheckboxFormValue = (value: string): number[] => {
     if (value === "")

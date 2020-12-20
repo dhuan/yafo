@@ -40,7 +40,7 @@ const text: FieldComponent =
                     id={inputId}
                     type={options.password ? "password" : "text"}
                     value={value}
-                    onChange={(event: any) => onChange(event.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChange(event.target.value)}
                     disabled={disabled}
                 />
             </div>
@@ -61,7 +61,7 @@ const select: FieldComponent =
 
             <select
                 id={inputId}
-                onChange={(event: any) => {onChange(toNumber(event.target.value))}}
+                onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {onChange(toNumber(event.target.value))}}
                 value={value}
                 disabled={disabled}
             >

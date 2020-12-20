@@ -57,7 +57,12 @@ const formFields = (): FormField<PlaygroundForm>[] => [
     },
 ]
 
-const FormComponentBase = ({ form, callback }: { form: FormProps<PlaygroundForm>, callback: Function }) => {
+type PlaygroundFormProps = {
+     form      : FormProps<PlaygroundForm>
+     callback  : Function 
+}
+
+const FormComponentBase = ({ form, callback }: PlaygroundFormProps) => {
     return (
         <div>
             <h1>Playground Form</h1>
@@ -105,7 +110,7 @@ const FormComponentBase = ({ form, callback }: { form: FormProps<PlaygroundForm>
     );
 }
 
-const FormComponent: any = withForm(
+const FormComponent: any = withForm<PlaygroundForm, PlaygroundFormProps>(
     "playground_form",
     fieldCollection,
     formFields,

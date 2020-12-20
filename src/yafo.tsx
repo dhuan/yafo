@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { replaceNth, allEqual, unzip } from './utils';
-import { fieldCollection } from './field_collection';
 
 import {
     FieldValidationResult,
@@ -10,6 +9,7 @@ import {
     FormValueFunc,
     FormValue,
     FormProps,
+    FieldComponent,
 } from './types';
 
 export {
@@ -78,7 +78,7 @@ const getFieldComponent = <T_FormFieldType extends unknown, T_TargetComponentPro
 
     const inputId = inputIds[index]
 
-    const Component: any = fieldCollection.get(field.type) as any
+    const Component: FieldComponent = fieldCollection.get(field.type) as FieldComponent
 
     if (!Component)
         throw new Error(`Could not get form field component for ${field.type}`);
@@ -88,12 +88,12 @@ const getFieldComponent = <T_FormFieldType extends unknown, T_TargetComponentPro
             inputId={inputId}
             label={field.label}
             value={value}
-            disabled={disabled as any}
+            disabled={disabled || false}
             onChange={changeValue(index)}
             errorMessage={errorMessage}
             options={fieldOptions}
         />
-    ) as any;
+    )
 }
 
 const toFieldComponents = <T_FormFieldType extends unknown, T_TargetComponentProps extends unknown>(
@@ -231,11 +231,15 @@ const setFormValues = <T extends unknown>(
     setTime(new Date())
 }
 
-const isFormFocused = (window: any, inputIds: string[]): boolean =>
-    inputIds.indexOf(window.document.activeElement.id) > -1
+const isFormFocused = (window: Window, inputIds: string[]): boolean => {
+    if (!window.document.activeElement)
+        return false
 
-const setEnterHandler = (inputIds: string[]) => (window: any, handler: any) => {
-    const handlerWrapped = (event: any) => {
+    return inputIds.indexOf(window.document.activeElement.id) > -1
+}
+
+const setEnterHandler = (inputIds: string[]) => (window: Window, handler: VoidFunction) => {
+    const handlerWrapped = (event: KeyboardEvent) => {
         if (event.key === "Enter" && isFormFocused(window, inputIds)) {
             handler();
         }
@@ -246,7 +250,7 @@ const setEnterHandler = (inputIds: string[]) => (window: any, handler: any) => {
     return () => window.removeEventListener("keydown", handlerWrapped, true)
 }
 
-const buildInputIds = (formName: string, length: number, index = 0): any => {
+const buildInputIds = (formName: string, length: number, index = 0): string[] => {
     if (length === index - 1)
         return []
 
@@ -269,13 +273,15 @@ const getFieldId = <T extends unknown>({ id }: FormField<T>): T => id
 const getFieldInitial = <T extends unknown>(defaultValue: FormValue) => ({ initial }: FormField<T>): FormValue =>
     typeof initial === "undefined" ? defaultValue : initial
 
+type FormBase<T> = React.ComponentClass<T> | React.FunctionComponent<T>
+
 export const withForm = <T extends unknown, TargetComponentProps extends unknown>(
     formName          : string,
     fieldCollection   : FieldCollection,
     buildFields       : (props: TargetComponentProps) => FormField<T>[],
-    TargetComponent   : React.ComponentClass<TargetComponentProps> | any,
+    TargetComponent   : FormBase<TargetComponentProps>,
     optionsBase?      : FormOptions<T, TargetComponentProps>,
-) => {
+): React.FunctionComponent<TargetComponentProps> => {
     const defaultFormOptions: FormOptions<T, TargetComponentProps> = {
         errorMessagesVisible    : true,
     }
@@ -336,7 +342,7 @@ export const withForm = <T extends unknown, TargetComponentProps extends unknown
                 { ...props }
             />
         );
-    };
+    }
 };
 
 export const regexValidator = (regex: RegExp, errorMessage: string) => (value: FormValue): [ boolean, string ] => {

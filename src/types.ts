@@ -49,7 +49,7 @@ export type FormProps<T> =  {
     disable                : VoidFunction
     enable                 : VoidFunction
     setValues              : (values: Map<T, FormValue>) => void
-    setEnterHandler        : (window: any, handler: VoidFunction) => void
+    setEnterHandler        : (window: Window, handler: VoidFunction) => void
     getInvalidFields       : () => T[]
 }
 
