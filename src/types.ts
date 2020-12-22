@@ -1,58 +1,60 @@
 import React from 'react';
 
-export enum FormFieldType { TEXT, SELECT, RADIO, CHECKBOX }
+export enum FieldType { TEXT, SELECT, RADIO, CHECKBOX }
 
-export type FormFieldComponentProps = {
+export type FieldCustomOptions = Record<string, any>
+
+export type FieldComponentProps = {
     inputId        : string
     label          : string
-    value          : FormValue
+    value          : Value
     disabled       : boolean
-    onChange       : OnChangeFormValueFunc
+    onChange       : OnChangeValueFunc
     errorMessage   : string
-    options        : FormFieldOptions
+    options        : string[]
+    custom         : FieldCustomOptions
 }
 
-export type FormFieldOption = string | boolean | number | string[]
-
-export type FormFieldOptions = Record<string, FormFieldOption>
+export type FieldOption = string | boolean | number | string[]
 
 export type FieldValidationResult = [ boolean, string ]
 
-export type FieldValidator = <T>(value: FormValue, formValue: (id: T) => FormValue) => FieldValidationResult
+export type FieldValidator = <T>(value: Value, formValue: (id: T) => Value) => FieldValidationResult
 
-export type FormField<T> = {
+export type Field<T> = {
     id         : T
     label      : string
-    type       : FormFieldType
+    type       : FieldType
     valid      : FieldValidator
-    initial    : FormValue
-    options?   : FormFieldOptions
+    initial    : Value
     disabled?  : boolean
+    options?   : string[]
+    custom?    : FieldCustomOptions
 }
 
-export type OnChangeFormValueFunc = (newValue: FormValue) => void
+export type OnChangeValueFunc = (newValue: Value) => void
 
-export type FormValueFunc = <T>(id: T) => FormValue
+export type ValueFunc = <T>(id: T) => Value
 
 export type ValidateFormFunc = () => boolean
 
-export type FormValue = string | number
+export type Value = string | number
 
-export type FormProps<T> =  {
+export type Props<T> =  {
     fieldComponents        : Map<T, React.ReactElement>
     dirty                  : boolean
     validate               : ValidateFormFunc
     valid                  : boolean
-    value                  : FormValueFunc
+    value                  : ValueFunc
     showErrorMessages      : () => void
     hideErrorMessages      : () => void
     disable                : VoidFunction
     enable                 : VoidFunction
-    setValues              : (values: Map<T, FormValue>) => void
+    setValues              : (values: Map<T, Value>) => void
     setEnterHandler        : (window: Window, handler: VoidFunction) => void
     getInvalidFields       : () => T[]
 }
 
-export type FieldComponent = React.FunctionComponent<FormFieldComponentProps>
+export type FieldComponent = React.FunctionComponent<FieldComponentProps>
 
-export type FieldCollection = Map<FormFieldType, FieldComponent>
+export type FieldCollection = Map<FieldType, FieldComponent>

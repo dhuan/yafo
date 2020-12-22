@@ -1,11 +1,11 @@
 import '@testing-library/jest-dom'
 import React from "react"
-import { withForm, FormFieldType, FormProps, fieldCollection, FormField, FormValue, parseCheckboxFormValue } from "../src/yafo"
+import { withForm, FieldType, Props, fieldCollection, Field, Value, parseCheckboxFormValue } from "../src/yafo"
 import {render, fireEvent} from '@testing-library/react'
 
 export enum TestForm { FirstName, LastName, Country, Gender, Hobbies }
 
-const TestComponent = ({ form, callback, getForm }: { form: FormProps<TestForm>, callback: VoidFunction, getForm?: VoidFunction }) => {
+const TestComponent = ({ form, callback, getForm }: { form: Props<TestForm>, callback: VoidFunction, getForm?: VoidFunction }) => {
     if (getForm)
         getForm(form)
 
@@ -49,11 +49,11 @@ const TestComponent = ({ form, callback, getForm }: { form: FormProps<TestForm>,
     );
 }
 
-const formFields = (): FormField<TestForm>[] => [
+const formFields = (): Field<TestForm>[] => [
     {
         id        : TestForm.FirstName,
         label     : "First name",
-        type      : FormFieldType.TEXT,
+        type      : FieldType.TEXT,
         valid     : (text: FormValue) => [ /^[a-zA-Z\s]{3,20}$/.test(text as string), "Wrong first name, pal!" ],
         initial   : "",
         disabled  : false,
@@ -61,7 +61,7 @@ const formFields = (): FormField<TestForm>[] => [
     {
         id        : TestForm.LastName,
         label     : "First name",
-        type      : FormFieldType.TEXT,
+        type      : FieldType.TEXT,
         valid     : (text: FormValue) => [ /^[a-zA-Z\s]{3,20}$/.test(text as string), "Wrong first name, pal!" ],
         initial   : "",
         disabled  : false,
@@ -69,29 +69,29 @@ const formFields = (): FormField<TestForm>[] => [
     {
         id        : TestForm.Country,
         label     : "Country",
-        type      : FormFieldType.SELECT,
+        type      : FieldType.SELECT,
         valid     : (chosenCountry: FormValue) => [ chosenCountry > 0, "Choose a country!" ],
         initial   : 0,
         disabled  : false,
-        options   : { selectOptions: ["Choose a country", "Brazil", "Germany"]  }
+        options   : ["Choose a country", "Brazil", "Germany"],
     },
     {
         id        : TestForm.Gender,
         label     : "Gender",
-        type      : FormFieldType.RADIO,
+        type      : FieldType.RADIO,
         valid     : (chosenGender: FormValue) => [ chosenGender > -1, "Choose a gender!" ],
         initial   : -1,
         disabled  : false,
-        options   : { radioOptions: ["Male", "Female"]  }
+        options   : ["Male", "Female"],
     },
     {
         id        : TestForm.Hobbies,
         label     : "Hobbies",
-        type      : FormFieldType.CHECKBOX,
+        type      : FieldType.CHECKBOX,
         valid     : (chosenHobbies: FormValue) => [ parseCheckboxFormValue(chosenHobbies as string).length > 0, "Please choose at least one hobby." ],
         initial   : "",
         disabled  : false,
-        options   : { checkboxOptions: ["Soccer", "Movies", "Music", "Books"]  }
+        options   : ["Soccer", "Movies", "Music", "Books"],
     },
 ]
 

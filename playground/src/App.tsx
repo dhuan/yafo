@@ -1,64 +1,64 @@
 import React from 'react';
 import './App.css';
-import { withForm, fieldCollection, FormFieldType, FormValue, FormField, FormProps, parseCheckboxFormValue } from './yafo/yafo.js';
+import { withForm, fieldCollection, FieldType, Value, Field, Props, parseCheckboxFormValue } from './yafo/yafo.js';
 
 enum PlaygroundForm { FirstName, LastName, Country, Gender, Hobbies }
 
 const countryOptions = ["Choose a country", "Brazil", "Germany"]
 const genderOptions = ["Male", "Female"]
-const checkboxOptions = ["Soccer", "Movies", "Music", "Books"]
+const hobbyOptions = ["Soccer", "Movies", "Music", "Books"]
 
 const mapIndexToValue = <T extends unknown>(list: T[], indexList: number[]): T[] =>
     indexList.map(index => list[index])
 
-const formFields = (): FormField<PlaygroundForm>[] => [
+const formFields = (): Field<PlaygroundForm>[] => [
     {
         id        : PlaygroundForm.FirstName,
         label     : "First name",
-        type      : FormFieldType.TEXT,
-        valid     : (text: FormValue) => [ /[a-zA-Z{3,10}]/.test(text as string), "Invalid first name!" ],
+        type      : FieldType.TEXT,
+        valid     : (text: Value) => [ /[a-zA-Z{3,10}]/.test(text as string), "Invalid first name!" ],
         initial   : "",
         disabled  : false,
     },
     {
         id        : PlaygroundForm.LastName,
         label     : "Last name",
-        type      : FormFieldType.TEXT,
-        valid     : (text: FormValue) => [ /[a-zA-Z{3,10}]/.test(text as string), "Invalid last name!" ],
+        type      : FieldType.TEXT,
+        valid     : (text: Value) => [ /[a-zA-Z{3,10}]/.test(text as string), "Invalid last name!" ],
         initial   : "",
         disabled  : false,
     },
     {
         id        : PlaygroundForm.Country,
         label     : "Country",
-        type      : FormFieldType.SELECT,
-        valid     : (chosenCountry: FormValue) => [ chosenCountry > 0, "Choose a country!" ],
+        type      : FieldType.SELECT,
+        valid     : (chosenCountry: Value) => [ chosenCountry > 0, "Choose a country!" ],
         initial   : 0,
         disabled  : false,
-        options   : { selectOptions: countryOptions }
+        options   : countryOptions,
     },
     {
         id        : PlaygroundForm.Gender,
         label     : "Gender",
-        type      : FormFieldType.RADIO,
-        valid     : (chosenGender: FormValue) => [ chosenGender > -1, "Please chose a gender." ],
+        type      : FieldType.RADIO,
+        valid     : (chosenGender: Value) => [ chosenGender > -1, "Please chose a gender." ],
         initial   : -1,
         disabled  : false,
-        options   : { radioOptions: genderOptions }
+        options   : genderOptions,
     },
     {
         id        : PlaygroundForm.Hobbies,
         label     : "Hobbies",
-        type      : FormFieldType.CHECKBOX,
-        valid     : (chosenHobbies: FormValue) => [ parseCheckboxFormValue(chosenHobbies as string).length > 0, "Please choose at least one hobby." ],
+        type      : FieldType.CHECKBOX,
+        valid     : (chosenHobbies: Value) => [ parseCheckboxFormValue(chosenHobbies as string).length > 0, "Please choose at least one hobby." ],
         initial   : "",
         disabled  : false,
-        options   : { checkboxOptions: checkboxOptions }
+        options   : hobbyOptions,
     },
 ]
 
 type PlaygroundFormProps = {
-     form      : FormProps<PlaygroundForm>
+     form      : Props<PlaygroundForm>
      callback  : Function 
 }
 
@@ -102,7 +102,7 @@ const FormComponentBase = ({ form, callback }: PlaygroundFormProps) => {
                         lastName: form.value(PlaygroundForm.LastName),
                         country: countryOptions[form.value(PlaygroundForm.Country) as number],
                         gender: genderOptions[form.value(PlaygroundForm.Gender) as number],
-                        hobbies: mapIndexToValue(checkboxOptions, parseCheckboxFormValue(form.value(PlaygroundForm.Hobbies) as string)).join(","),
+                        hobbies: mapIndexToValue(hobbyOptions, parseCheckboxFormValue(form.value(PlaygroundForm.Hobbies) as string)).join(","),
                     })
                 }}
             />

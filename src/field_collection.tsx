@@ -1,6 +1,6 @@
 import React from 'react';
-import { FormFieldComponentProps } from "./yafo"
-import { FormFieldType, FieldComponent, FieldCollection } from "./types"
+import { FieldComponentProps } from "./yafo"
+import { FieldType, FieldComponent, FieldCollection } from "./types"
 import { toNumber, parseCheckboxFormValue, serializeCheckboxValue } from "./utils"
 
 const styles = {
@@ -27,7 +27,7 @@ const errorMessageComponent = (errorMessage: string, inputId: string): React.Rea
 }
 
 const text: FieldComponent =
-    ({ inputId, label, value, disabled, onChange, errorMessage, options }: FormFieldComponentProps) =>
+    ({ inputId, label, value, disabled, onChange, errorMessage, custom }: FieldComponentProps) =>
 {
     return (
         <div style={styles.fieldWrapper}>
@@ -38,7 +38,7 @@ const text: FieldComponent =
             <div>
                 <input
                     id={inputId}
-                    type={options.password ? "password" : "text"}
+                    type={custom.password ? "password" : "text"}
                     value={value}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChange(event.target.value)}
                     disabled={disabled}
@@ -51,7 +51,7 @@ const text: FieldComponent =
 }
 
 const select: FieldComponent =
-    ({ inputId, label, value, disabled, onChange, errorMessage, options }: FormFieldComponentProps) =>
+    ({ inputId, label, value, disabled, onChange, errorMessage, options }: FieldComponentProps) =>
 {
     return (
         <div style={styles.fieldWrapper}>
@@ -65,7 +65,7 @@ const select: FieldComponent =
                 value={value}
                 disabled={disabled}
             >
-                { (options.selectOptions as string[]).map((option, i) => (
+                { options.map((option, i) => (
                     <option
                         key={["select", label, i].join("-")}
                         value={i}
@@ -81,7 +81,7 @@ const select: FieldComponent =
 }
 
 const radio: FieldComponent =
-    ({ inputId, label, value, disabled, onChange, errorMessage, options }: FormFieldComponentProps) =>
+    ({ inputId, label, value, disabled, onChange, errorMessage, options }: FieldComponentProps) =>
 {
     return (
         <div style={styles.fieldWrapper}>
@@ -90,7 +90,7 @@ const radio: FieldComponent =
             </div>
 
             <div style={{opacity: disabled ? ".65" : "1"}}>
-                { (options.radioOptions as string[]).map((option, i) => (
+                { options.map((option, i) => (
                     <div
                         key={["radio", label, i].join("-")}
                         onClick={() => !disabled && onChange(i)}
@@ -113,7 +113,7 @@ const radio: FieldComponent =
 }
 
 const checkbox: FieldComponent =
-    ({ inputId, label, value, disabled, onChange, errorMessage, options }: FormFieldComponentProps) =>
+    ({ inputId, label, value, disabled, onChange, errorMessage, options }: FieldComponentProps) =>
 {
     return (
         <div style={styles.fieldWrapper}>
@@ -122,7 +122,7 @@ const checkbox: FieldComponent =
             </div>
 
             <div style={{opacity: disabled ? ".65" : "1"}}>
-                { (options.checkboxOptions as string[]).map((option, i) => {
+                { options.map((option, i) => {
                     const parsedCheckboxValue = parseCheckboxFormValue(value as string)
                     const checked = parsedCheckboxValue.indexOf(toNumber(i)) > -1
 
@@ -150,8 +150,8 @@ const checkbox: FieldComponent =
 }
 
 export const fieldCollection: FieldCollection = new Map([
-    [ FormFieldType.TEXT, text ],
-    [ FormFieldType.SELECT, select ],
-    [ FormFieldType.RADIO, radio ],
-    [ FormFieldType.CHECKBOX, checkbox ],
+    [ FieldType.TEXT, text ],
+    [ FieldType.SELECT, select ],
+    [ FieldType.RADIO, radio ],
+    [ FieldType.CHECKBOX, checkbox ],
 ])

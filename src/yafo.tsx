@@ -4,34 +4,33 @@ import { replaceNth, allEqual, unzip } from './utils';
 import {
     FieldValidationResult,
     FieldValidator,
-    FormField,
+    Field,
     FieldCollection,
-    FormValueFunc,
-    FormValue,
-    FormProps,
+    ValueFunc,
+    Value,
+    Props,
     FieldComponent,
 } from './types';
 
 export {
-    FormFieldType,
-    FormFieldComponentProps,
-    FormFieldOption,
-    FormFieldOptions,
+    FieldType,
+    FieldComponentProps,
+    FieldOption,
     FieldValidationResult,
     FieldValidator,
-    FormField,
-    OnChangeFormValueFunc,
+    Field,
+    OnChangeValueFunc,
     FieldCollection,
-    FormValueFunc,
-    FormValue,
-    FormProps,
+    ValueFunc,
+    Value,
+    Props,
     FieldComponent,
 } from './types';
 
 export { fieldCollection } from './field_collection';
 export { parseCheckboxFormValue } from './utils';
 
-const changeStateValue = <T extends unknown>(field: FormField<T>, state: FormState, formValue: FormValueFunc) => (index: number) => (newValue: FormValue): void => {
+const changeStateValue = <T extends unknown>(field: Field<T>, state: State, formValue: ValueFunc) => (index: number) => (newValue: Value): void => {
     const { values, setValues, validation, setValidation, dirty, setDirty, errorMessage, setErrorMessage } = state
 
     const currentValue = values[index]
@@ -56,20 +55,22 @@ const changeStateValue = <T extends unknown>(field: FormField<T>, state: FormSta
         setDirty(true);
 }
 
-const getFieldComponent = <T_FormFieldType extends unknown, T_TargetComponentProps extends unknown>(
+const getFieldComponent = <T_FieldType extends unknown, T_TargetComponentProps extends unknown>(
     formName            : string,
-    field               : FormField<T_FormFieldType>,
-    value               : FormValue,
-    changeValue         : (index: number) => (newValue: FormValue) => void,
+    field               : Field<T_FieldType>,
+    value               : Value,
+    changeValue         : (index: number) => (newValue: Value) => void,
     fieldValid          : boolean,
     errorMessageBase    : string,
     index               : number,
     fieldCollection     : FieldCollection,
     formActive          : boolean,
-    options             : FormOptions<T_FormFieldType, T_TargetComponentProps>,
+    options             : Options<T_FieldType, T_TargetComponentProps>,
     inputIds            : string[],
 ): React.ReactElement => {
-    const fieldOptions = field.options || {};
+    const fieldOptions = field.options || []
+
+    const fieldCustomOptions = field.custom || {}
 
     const errorMessage =
         !fieldValid && options.errorMessagesVisible ? errorMessageBase : "";
@@ -92,22 +93,23 @@ const getFieldComponent = <T_FormFieldType extends unknown, T_TargetComponentPro
             onChange={changeValue(index)}
             errorMessage={errorMessage}
             options={fieldOptions}
+            custom={fieldCustomOptions}
         />
     )
 }
 
-const toFieldComponents = <T_FormFieldType extends unknown, T_TargetComponentProps extends unknown>(
+const toFieldComponents = <T_FieldType extends unknown, T_TargetComponentProps extends unknown>(
     formName        : string,
-    fields          : FormField<T_FormFieldType>[],
-    state           : FormState,
-    map             : Map<T_FormFieldType, React.ReactElement>,
+    fields          : Field<T_FieldType>[],
+    state           : State,
+    map             : Map<T_FieldType, React.ReactElement>,
     fieldCollection : FieldCollection,
-    options         : FormOptions<T_FormFieldType, T_TargetComponentProps>,
-    formValue       : FormValueFunc,
+    options         : Options<T_FieldType, T_TargetComponentProps>,
+    formValue       : ValueFunc,
     formActive      : boolean,
     inputIds        : string[],
     index = 0,
-): Map<T_FormFieldType, React.ReactElement> =>
+): Map<T_FieldType, React.ReactElement> =>
 {
     if (index > (fields.length - 1))
         return map;
@@ -141,18 +143,18 @@ const toFieldComponents = <T_FormFieldType extends unknown, T_TargetComponentPro
     return toFieldComponents(formName, fields, state, map, fieldCollection, options, formValue, formActive, inputIds, index + 1);
 }
 
-type FormState = {
-    values            : FormValue[]
+type State = {
+    values            : Value[]
     validation        : boolean[],
     dirty             : boolean,
-    setValues         : (newValues: FormValue[]) => void,
+    setValues         : (newValues: Value[]) => void,
     setValidation     : (newValidation: boolean[]) => void,
     setDirty          : (newDirty: boolean) => void,
     errorMessage      : string[],
     setErrorMessage   : (newErrorMessage: string[]) => void,
 }
 
-const getFormValidation = <T extends unknown>(fields: FormField<T>[], state: FormState, formValue: (id: T) => FormValue, index = 0): [ boolean, string ][] => {
+const getFormValidation = <T extends unknown>(fields: Field<T>[], state: State, formValue: (id: T) => Value, index = 0): [ boolean, string ][] => {
     if (fields.length === 0)
         return [];
 
@@ -161,7 +163,7 @@ const getFormValidation = <T extends unknown>(fields: FormField<T>[], state: For
     return [ [ valid, errorMessage ] as [ boolean, string ] ].concat(getFormValidation(fields.slice(1), state, formValue, index + 1));
 }
 
-const validateForm = <T extends unknown>(fields: FormField<T>[], state: FormState, formValue: (id: T) => FormValue) => (): boolean => {
+const validateForm = <T extends unknown>(fields: Field<T>[], state: State, formValue: (id: T) => Value) => (): boolean => {
     const validationResults = getFormValidation(fields, state, formValue);
 
     const [ newValidation, newErrorMessage ] = unzip(validationResults);
@@ -173,7 +175,7 @@ const validateForm = <T extends unknown>(fields: FormField<T>[], state: FormStat
     return allEqual<boolean>(true, newValidation);
 }
 
-const formValue = <T extends unknown>(values: FormValue[], fieldIds: T[]) => (id: T): FormValue => {
+const formValue = <T extends unknown>(values: Value[], fieldIds: T[]) => (id: T): Value => {
     const index = fieldIds.indexOf(id)
 
     if (index === -1 || typeof values[index] === "undefined")
@@ -182,16 +184,16 @@ const formValue = <T extends unknown>(values: FormValue[], fieldIds: T[]) => (id
     return values[index];
 }
 
-export type PropsToInitialValuesFunc<T_TargetComponentProps, T_FormFieldType> = (props: T_TargetComponentProps) => Map<T_FormFieldType, FormValue>
+export type PropsToInitialValuesFunc<T_TargetComponentProps, T_FieldType> = (props: T_TargetComponentProps) => Map<T_FieldType, Value>
 
-export type FormOptions<T_FormFieldType, T_TargetComponentProps> = {
+export type Options<T_FieldType, T_TargetComponentProps> = {
     errorMessagesVisible    : boolean;
-    propsToInitialValues?   : PropsToInitialValuesFunc<T_TargetComponentProps, T_FormFieldType>
+    propsToInitialValues?   : PropsToInitialValuesFunc<T_TargetComponentProps, T_FieldType>
 }
 
-const showFormErrorMessages = <T_FormFieldType, T_TargetComponentProps>(
-    options       : FormOptions<T_FormFieldType, T_TargetComponentProps>,
-    setOptions    : (options: FormOptions<T_FormFieldType, T_TargetComponentProps>) => void,
+const showFormErrorMessages = <T_FieldType, T_TargetComponentProps>(
+    options       : Options<T_FieldType, T_TargetComponentProps>,
+    setOptions    : (options: Options<T_FieldType, T_TargetComponentProps>) => void,
     visible       : boolean,
 ) => (): void => {
     setOptions({ ...options, errorMessagesVisible: visible });
@@ -203,28 +205,28 @@ const disableForm = (setFormActive: (active: boolean) => void) => () =>
 const enableForm = (setFormActive: (active: boolean) => void) => () => 
     setFormActive(true)
 
-const initialValuesForForm = <T_FormFieldType extends unknown, T_TargetComponentProps extends unknown>(
-    fields         : FormField<T_FormFieldType>[],
-    formOptions    : FormOptions<T_FormFieldType, T_TargetComponentProps>,
+const initialValuesForForm = <T_FieldType extends unknown, T_TargetComponentProps extends unknown>(
+    fields         : Field<T_FieldType>[],
+    formOptions    : Options<T_FieldType, T_TargetComponentProps>,
     props          : T_TargetComponentProps
-) => (): FormValue[] => {
+) => (): Value[] => {
     if (!formOptions.propsToInitialValues)
         return fields.map(getFieldInitial(""))
 
     const initialValuesMap = formOptions.propsToInitialValues(props)
 
     return fields.map(
-        (field: FormField<T_FormFieldType>) => initialValuesMap.get(field.id)
+        (field: Field<T_FieldType>) => initialValuesMap.get(field.id)
     ) as any
 }
 
 const setFormValues = <T extends unknown>(
-    fields       : FormField<T>[],
-    state        : FormState,
+    fields       : Field<T>[],
+    state        : State,
     setTime      : (time: Date) => void,
-) => (values: Map<T, FormValue>): void => {
+) => (values: Map<T, Value>): void => {
     const newValues =
-        fields.map((field: FormField<T>, i: number) => values.get(field.id) || state.values[i])
+        fields.map((field: Field<T>, i: number) => values.get(field.id) || state.values[i])
 
     state.setValues(newValues)
 
@@ -257,7 +259,7 @@ const buildInputIds = (formName: string, length: number, index = 0): string[] =>
     return [ [ formName, "field", index ].join("_") ].concat(buildInputIds(formName, length, index + 1))
 }
 
-const getInvalidFields = <T extends unknown>(fields: FormField<T>[], validation: boolean[], i = 0) => (): T[] => {
+const getInvalidFields = <T extends unknown>(fields: Field<T>[], validation: boolean[], i = 0) => (): T[] => {
     if (i > fields.length - 1)
         return []
 
@@ -268,9 +270,9 @@ const getInvalidFields = <T extends unknown>(fields: FormField<T>[], validation:
     return [ ...(valid ? [] : [ field.id ]) ].concat(getInvalidFields(fields, validation, i + 1)())
 }
 
-const getFieldId = <T extends unknown>({ id }: FormField<T>): T => id
+const getFieldId = <T extends unknown>({ id }: Field<T>): T => id
 
-const getFieldInitial = <T extends unknown>(defaultValue: FormValue) => ({ initial }: FormField<T>): FormValue =>
+const getFieldInitial = <T extends unknown>(defaultValue: Value) => ({ initial }: Field<T>): Value =>
     typeof initial === "undefined" ? defaultValue : initial
 
 type FormBase<T> = React.ComponentClass<T> | React.FunctionComponent<T>
@@ -278,11 +280,11 @@ type FormBase<T> = React.ComponentClass<T> | React.FunctionComponent<T>
 export const withForm = <T extends unknown, TargetComponentProps extends unknown>(
     formName          : string,
     fieldCollection   : FieldCollection,
-    buildFields       : (props: TargetComponentProps) => FormField<T>[],
+    buildFields       : (props: TargetComponentProps) => Field<T>[],
     TargetComponent   : FormBase<TargetComponentProps>,
-    optionsBase?      : FormOptions<T, TargetComponentProps>,
+    optionsBase?      : Options<T, TargetComponentProps>,
 ): React.FunctionComponent<TargetComponentProps> => {
-    const defaultFormOptions: FormOptions<T, TargetComponentProps> = {
+    const defaultFormOptions: Options<T, TargetComponentProps> = {
         errorMessagesVisible    : true,
     }
 
@@ -290,12 +292,12 @@ export const withForm = <T extends unknown, TargetComponentProps extends unknown
         const formOptions = optionsBase || defaultFormOptions
 
         const [ fields ] = useState(() => buildFields(props))
-        const [ values, setValues ] = useState<FormValue[]>(initialValuesForForm(fields, formOptions, props));
+        const [ values, setValues ] = useState<Value[]>(initialValuesForForm(fields, formOptions, props));
         const [ fieldIds ] = useState<T[]>(() => fields.map(getFieldId));
         const [ validation, setValidation ] = useState<boolean[]>(() => fields.map(() => true));
         const [ dirty, setDirty ] = useState(false);
         const [ errorMessage, setErrorMessage ] = useState<string[]>(() => fields.map(() => ""));
-        const [ options, setOptions ] = useState<FormOptions<T, TargetComponentProps>>(formOptions);
+        const [ options, setOptions ] = useState<Options<T, TargetComponentProps>>(formOptions);
         const [ formActive, setFormActive ] = useState(true);
         const [ inputIds ] = useState(() => buildInputIds(formName, fields.length));
         const [ valueSetManuallyTime, setValueSetManuallyTime ] = useState(() => new Date());
@@ -304,10 +306,10 @@ export const withForm = <T extends unknown, TargetComponentProps extends unknown
             validateForm(fields, state, formValue(values, fieldIds))();
         }, [ valueSetManuallyTime ])
 
-        const state: FormState =
+        const state: State =
             { values, validation, dirty, setValues, setValidation, setDirty, errorMessage, setErrorMessage };
 
-        const getFormValue = formValue<T>(values, fieldIds) as FormValueFunc
+        const getFormValue = formValue<T>(values, fieldIds) as ValueFunc
 
         const fieldComponents = toFieldComponents(
             formName,
@@ -321,7 +323,7 @@ export const withForm = <T extends unknown, TargetComponentProps extends unknown
             inputIds,
         );
 
-        const formProps: FormProps<T> = {
+        const formProps: Props<T> = {
             fieldComponents        : fieldComponents,
             dirty,
             validate               : validateForm(fields, state, getFormValue),
@@ -345,14 +347,14 @@ export const withForm = <T extends unknown, TargetComponentProps extends unknown
     }
 };
 
-export const regexValidator = (regex: RegExp, errorMessage: string) => (value: FormValue): [ boolean, string ] => {
+export const regexValidator = (regex: RegExp, errorMessage: string) => (value: Value): [ boolean, string ] => {
     if (typeof value === "string" && regex.test(value as string))
         return [ true, "" ]
 
     return [ false, errorMessage ]
 }
 
-export const rangeValidator = (from: number, to: number, errorMessage: string) => (value: FormValue): [ boolean, string ] => {
+export const rangeValidator = (from: number, to: number, errorMessage: string) => (value: Value): [ boolean, string ] => {
     const valueType = typeof value
 
     if (valueType === "boolean")
@@ -366,7 +368,7 @@ export const rangeValidator = (from: number, to: number, errorMessage: string) =
 }
 
 export const validateAll =
-    <T extends unknown>(validators: FieldValidator[]) => (value: FormValue, formValue: (id: T) => FormValue): FieldValidationResult =>
+    <T extends unknown>(validators: FieldValidator[]) => (value: Value, formValue: (id: T) => Value): FieldValidationResult =>
 {
     if (validators.length === 0)
         return [ true, "" ]
