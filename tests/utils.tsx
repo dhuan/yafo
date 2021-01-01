@@ -3,7 +3,7 @@ import React from "react"
 import { withForm, FieldType, Props, fieldCollection, Field, Value, parseCheckboxFormValue } from "../src/yafo"
 import {render, fireEvent} from '@testing-library/react'
 
-export enum TestForm { FirstName, LastName, Country, Gender, Hobbies }
+export enum TestForm { FirstName, LastName, Country, Gender, Hobbies, Unused }
 
 const TestComponent = ({ form, callback, getForm }: { form: Props<TestForm>, callback: any, getForm?: any }) => {
     if (getForm)
@@ -14,23 +14,23 @@ const TestComponent = ({ form, callback, getForm }: { form: Props<TestForm>, cal
             <h1>My Form</h1>
 
             <div id="field-first-name">
-                { form.fieldComponents.get(TestForm.FirstName) }
+                { form.field(TestForm.FirstName) }
             </div>
 
             <div id="field-last-name">
-                { form.fieldComponents.get(TestForm.LastName) }
+                { form.field(TestForm.LastName) }
             </div>
 
             <div id="field-country">
-                { form.fieldComponents.get(TestForm.Country) }
+                { form.field(TestForm.Country) }
             </div>
 
             <div id="field-gender">
-                { form.fieldComponents.get(TestForm.Gender) }
+                { form.field(TestForm.Gender) }
             </div>
 
             <div id="field-hobbies">
-                { form.fieldComponents.get(TestForm.Hobbies) }
+                { form.field(TestForm.Hobbies) }
             </div>
 
             <input

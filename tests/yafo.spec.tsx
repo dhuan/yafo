@@ -59,6 +59,20 @@ describe("Form Properties", () => {
 })
 
 describe("Form Methods", () => {
+    describe("form.field", () => {
+        test("retrieving component", async () => {
+            const { form, container } = renderTestForm()
+
+            expect(form().field(TestForm.FirstName)).toMatchSnapshot()
+        })
+
+        test("attempting to retrieve unexisting component", async () => {
+            const { form, container } = renderTestForm()
+
+            expect(() => form().field(TestForm.Unused)).toThrowError("Could not find field component")
+        })
+    })
+
     test("form.setValues", async () => {
         const { form, container } = renderTestForm()
 

@@ -41,7 +41,7 @@ export type ValidateFormFunc = () => boolean
 export type Value = string | number
 
 export type Props<T> =  {
-    fieldComponents        : Map<T, React.ReactElement>
+    field                  : (id: T) => React.ReactElement
     dirty                  : boolean
     validate               : ValidateFormFunc
     valid                  : boolean

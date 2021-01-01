@@ -71,3 +71,10 @@ export const serializeCheckboxValue = (checkboxValue: number[], i: number, check
 
     return newValue.join(",")
 }
+
+export const mapGetter = <Key, Value>(map: Map<Key, Value>, errorMessage: string) => (key: Key): Value => {
+    if (!map.has(key))
+        throw new Error(errorMessage)
+
+    return map.get(key) as Value
+}

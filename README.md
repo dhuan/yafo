@@ -42,9 +42,9 @@ const formFields = (): Field<MyForm>[] => [
 
 const MyFormPage = ({ form }: { form: Props<MyForm> }) => (
     <div>
-        { form.fieldComponents.get(MyForm.FirstName) }
+        { form.field(MyForm.FirstName) }
         <br />
-        { form.fieldComponents.get(MyForm.LastName) }
+        { form.field(MyForm.LastName) }
         <br />
         <input type="submit" onClick={doSomething()} />
     </div>

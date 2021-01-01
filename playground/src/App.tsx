@@ -68,23 +68,23 @@ const FormComponentBase = ({ form, callback }: PlaygroundFormProps) => {
             <h1>Playground Form</h1>
 
             <div id="field-first-name">
-                { form.fieldComponents.get(PlaygroundForm.FirstName) }
+                { form.field(PlaygroundForm.FirstName) }
             </div>
 
             <div id="field-last-name">
-                { form.fieldComponents.get(PlaygroundForm.LastName) }
+                { form.field(PlaygroundForm.LastName) }
             </div>
 
             <div id="field-country">
-                { form.fieldComponents.get(PlaygroundForm.Country) }
+                { form.field(PlaygroundForm.Country) }
             </div>
 
             <div id="field-gender">
-                { form.fieldComponents.get(PlaygroundForm.Gender) }
+                { form.field(PlaygroundForm.Gender) }
             </div>
 
             <div id="field-hobbies">
-                { form.fieldComponents.get(PlaygroundForm.Hobbies) }
+                { form.field(PlaygroundForm.Hobbies) }
             </div>
 
             <input

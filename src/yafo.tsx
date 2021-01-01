@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { replaceNth, allEqual, unzip } from './utils';
+import { replaceNth, allEqual, unzip, mapGetter } from './utils';
 
 import {
     FieldValidationResult,
@@ -324,7 +324,7 @@ export const withForm = <T extends unknown, TargetComponentProps extends unknown
         );
 
         const formProps: Props<T> = {
-            fieldComponents        : fieldComponents,
+            field                  : mapGetter<T, React.ReactElement>(fieldComponents, "Could not find field component."),
             dirty,
             validate               : validateForm(fields, state, getFormValue),
             valid                  : allEqual<boolean>(true, validation),

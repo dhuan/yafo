@@ -1,5 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Form Methods form.field retrieving component 1`] = `
+<text
+  custom={Object {}}
+  disabled={false}
+  errorMessage=""
+  inputId="test_form_field_0"
+  label="First name"
+  onChange={[Function]}
+  options={Array []}
+  value=""
+/>
+`;
+
 exports[`renders 1`] = `
 <div>
   <h1>
