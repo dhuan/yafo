@@ -1,4 +1,6 @@
-# Yet another form library for React
+# Yet Another Form Library for React
+
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dhuan/yafo/Test?logo=github&style=for-the-badge)](https://github.com/dhuan/yafo/actions?query=workflow%3AGo)
 
 ## Getting Started
 

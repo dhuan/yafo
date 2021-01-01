@@ -5,7 +5,7 @@ import {act} from '@testing-library/react'
 import { renderTestForm, getTestComponent, TestForm } from './utils';
 
 test("renders", () => {
-    const Component = getTestComponent()
+    const Component = getTestComponent() as any
 
     expect(renderer.create(<Component callback={jest.fn()} />)).toMatchSnapshot();
 })
@@ -65,9 +65,9 @@ describe("Form Methods", () => {
         const FIRST_NAME_INPUT_ELEMENT_SELECTOR = "#test_form_field_0"
         const LAST_NAME_INPUT_ELEMENT_SELECTOR = "#test_form_field_1"
 
-        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).value).toEqual("")
+        expect(container.querySelector<HTMLInputElement>(FIRST_NAME_INPUT_ELEMENT_SELECTOR)!.value).toEqual("")
 
-        expect(container.querySelector(LAST_NAME_INPUT_ELEMENT_SELECTOR).value).toEqual("")
+        expect(container.querySelector<HTMLInputElement>(LAST_NAME_INPUT_ELEMENT_SELECTOR)!.value).toEqual("")
 
         act(() => {
             form().setValues(new Map([
@@ -76,9 +76,9 @@ describe("Form Methods", () => {
             ]))
         })
 
-        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).value).toEqual("Some first name")
+        expect(container.querySelector<HTMLInputElement>(FIRST_NAME_INPUT_ELEMENT_SELECTOR)!.value).toEqual("Some first name")
 
-        expect(container.querySelector(LAST_NAME_INPUT_ELEMENT_SELECTOR).value).toEqual("Some last name")
+        expect(container.querySelector<HTMLInputElement>(LAST_NAME_INPUT_ELEMENT_SELECTOR)!.value).toEqual("Some last name")
     })
 
     test("form.enable and form.disable", async () => {
@@ -86,19 +86,19 @@ describe("Form Methods", () => {
 
         const { form, container } = renderTestForm()
 
-        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).disabled).toEqual(false)
+        expect(container.querySelector<HTMLInputElement>(FIRST_NAME_INPUT_ELEMENT_SELECTOR)!.disabled).toEqual(false)
 
         act(() => {
             form().disable()
         })
 
-        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).disabled).toEqual(true)
+        expect(container.querySelector<HTMLInputElement>(FIRST_NAME_INPUT_ELEMENT_SELECTOR)!.disabled).toEqual(true)
 
         act(() => {
             form().enable()
         })
 
-        expect(container.querySelector(FIRST_NAME_INPUT_ELEMENT_SELECTOR).disabled).toEqual(false)
+        expect(container.querySelector<HTMLInputElement>(FIRST_NAME_INPUT_ELEMENT_SELECTOR)!.disabled).toEqual(false)
     })
 
     test("form.showErrorMessages and form.hideErrorMessages", async () => {

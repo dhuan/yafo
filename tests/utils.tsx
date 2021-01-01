@@ -5,7 +5,7 @@ import {render, fireEvent} from '@testing-library/react'
 
 export enum TestForm { FirstName, LastName, Country, Gender, Hobbies }
 
-const TestComponent = ({ form, callback, getForm }: { form: Props<TestForm>, callback: VoidFunction, getForm?: VoidFunction }) => {
+const TestComponent = ({ form, callback, getForm }: { form: Props<TestForm>, callback: any, getForm?: any }) => {
     if (getForm)
         getForm(form)
 
@@ -54,7 +54,7 @@ const formFields = (): Field<TestForm>[] => [
         id        : TestForm.FirstName,
         label     : "First name",
         type      : FieldType.TEXT,
-        valid     : (text: FormValue) => [ /^[a-zA-Z\s]{3,20}$/.test(text as string), "Wrong first name, pal!" ],
+        valid     : (text: Value) => [ /^[a-zA-Z\s]{3,20}$/.test(text as string), "Wrong first name, pal!" ],
         initial   : "",
         disabled  : false,
     },
@@ -62,7 +62,7 @@ const formFields = (): Field<TestForm>[] => [
         id        : TestForm.LastName,
         label     : "First name",
         type      : FieldType.TEXT,
-        valid     : (text: FormValue) => [ /^[a-zA-Z\s]{3,20}$/.test(text as string), "Wrong first name, pal!" ],
+        valid     : (text: Value) => [ /^[a-zA-Z\s]{3,20}$/.test(text as string), "Wrong first name, pal!" ],
         initial   : "",
         disabled  : false,
     },
@@ -70,7 +70,7 @@ const formFields = (): Field<TestForm>[] => [
         id        : TestForm.Country,
         label     : "Country",
         type      : FieldType.SELECT,
-        valid     : (chosenCountry: FormValue) => [ chosenCountry > 0, "Choose a country!" ],
+        valid     : (chosenCountry: Value) => [ chosenCountry > 0, "Choose a country!" ],
         initial   : 0,
         disabled  : false,
         options   : ["Choose a country", "Brazil", "Germany"],
@@ -79,7 +79,7 @@ const formFields = (): Field<TestForm>[] => [
         id        : TestForm.Gender,
         label     : "Gender",
         type      : FieldType.RADIO,
-        valid     : (chosenGender: FormValue) => [ chosenGender > -1, "Choose a gender!" ],
+        valid     : (chosenGender: Value) => [ chosenGender > -1, "Choose a gender!" ],
         initial   : -1,
         disabled  : false,
         options   : ["Male", "Female"],
@@ -88,7 +88,7 @@ const formFields = (): Field<TestForm>[] => [
         id        : TestForm.Hobbies,
         label     : "Hobbies",
         type      : FieldType.CHECKBOX,
-        valid     : (chosenHobbies: FormValue) => [ parseCheckboxFormValue(chosenHobbies as string).length > 0, "Please choose at least one hobby." ],
+        valid     : (chosenHobbies: Value) => [ parseCheckboxFormValue(chosenHobbies as string).length > 0, "Please choose at least one hobby." ],
         initial   : "",
         disabled  : false,
         options   : ["Soccer", "Movies", "Music", "Books"],
@@ -115,7 +115,7 @@ export const getTestComponent = () =>
         { errorMessagesVisible: false }
     )
 
-const fillFormWithValidFields = (change, click, clickNth) => () => {
+const fillFormWithValidFields = (change: any, click: any, clickNth: any) => () => {
     change("#field-first-name input[type=text]", "My first name");
 
     change("#field-last-name input[type=text]", "My last name");
@@ -132,11 +132,11 @@ const fillFormWithValidFields = (change, click, clickNth) => () => {
 }
 
 export const renderTestForm = () => {
-    const Component = getTestComponent()
+    const Component = getTestComponent() as any
 
-    let form = null
+    let form: any = null
 
-    const getForm = (formProps) => {
+    const getForm = (formProps: any) => {
         form = formProps
     }
 
