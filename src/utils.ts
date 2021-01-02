@@ -58,9 +58,9 @@ export const removeNth = <T>(list: T[], iToRemove: number): T[]  =>
 export const serializeCheckboxValue = (checkboxValue: number[], i: number, checked: boolean): string => {
     const newValue = (() => {
         const position = checkboxValue.indexOf(i)
-        const exists = position === -1
+        const exists = position > -1
 
-        if (exists && checked)
+        if (!exists && checked)
             return checkboxValue.concat(i)
 
         if (exists && !checked)
