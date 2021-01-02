@@ -15,8 +15,10 @@ form fields once in a simple structure describing what each field is, then at
 the UI code, you place one-line rendered components, without having to hassle
 with callbacks and props and all kinds of custom logic for each field.
 
+[Check this example in CodeSandbox.](https://codesandbox.io/s/yafo-example-yomb9)
+
 ```sh
-import { withForm, fieldCollection, FieldType, Field, Props } from "yafo";
+import { withForm, fieldCollection, FieldType, Field, Props, regexValidator } from "yafo";
 
 enum MyForm { FirstName, LastName }
 
@@ -26,31 +28,30 @@ const formFields = (): Field<MyForm>[] => [
         label     : "First name",
         type      : FieldType.Text,
         valid     : regexValidator(/[a-zA-Z{3,10}]/, "Invalid first name!"),
-        initial   : "",
-        disabled  : false,
     },
     {
         id        : MyForm.LastName,
         label     : "Last name",
         type      : FieldType.Text,
         valid     : regexValidator(/[a-zA-Z{3,10}]/, "Invalid last name!"),
-        initial   : "",
-        disabled  : false,
     },
     // Other fields...
 ]
 
 const MyFormPage = ({ form }: { form: Props<MyForm> }) => (
     <div>
-        { form.field(MyForm.FirstName) }
+        <div>
+            { form.field(MyForm.FirstName) }
+            <br />
+            { form.field(MyForm.LastName) }
+            <br />
+            <input type="submit" onClick={doSomething()} />
+        </div>
         <br />
-        { form.field(MyForm.LastName) }
         <br />
-        <input type="submit" onClick={doSomething()} />
-    </div>
-
-    <div>
-        Your full name is { form.value(MyForm.FirstName) } { form.value(MyForm.LastName) }
+        <div>
+            Your full name is { form.value(MyForm.FirstName) } { form.value(MyForm.LastName) }
+        </div>
     </div>
 )
 
