@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { withForm, fieldCollection, FieldType, Value, Field, Props, parseCheckboxFormValue } from './yafo/yafo.js';
+import { withForm, fieldCollection, FieldType, Value, Field, Props, parseCheckboxFormValue, regexValidator } from './yafo/yafo.js';
 
 enum PlaygroundForm { FirstName, LastName, Country, Gender, Hobbies }
 
@@ -16,7 +16,7 @@ const formFields = (): Field<PlaygroundForm>[] => [
         id        : PlaygroundForm.FirstName,
         label     : "First name",
         type      : FieldType.TEXT,
-        valid     : (text: Value) => [ /[a-zA-Z{3,10}]/.test(text as string), "Invalid first name!" ],
+        valid     : regexValidator(/^[a-zA-Z]{3,10}$/, "Invalid first name!"),
         initial   : "",
         disabled  : false,
     },
@@ -24,7 +24,7 @@ const formFields = (): Field<PlaygroundForm>[] => [
         id        : PlaygroundForm.LastName,
         label     : "Last name",
         type      : FieldType.TEXT,
-        valid     : (text: Value) => [ /[a-zA-Z{3,10}]/.test(text as string), "Invalid last name!" ],
+        valid     : regexValidator(/^[a-zA-Z]{3,10}$/, "Invalid last name!"),
         initial   : "",
         disabled  : false,
     },

@@ -1,8 +1,9 @@
 import '@testing-library/jest-dom'
 import React from "react"
-import renderer from 'react-test-renderer';
-import {act} from '@testing-library/react'
-import { renderTestForm, getTestComponent, TestForm } from './utils';
+import renderer from "react-test-renderer";
+import {act} from "@testing-library/react"
+import { renderTestForm, getTestComponent, TestForm } from "./utils";
+import { regexValidator } from "../src/yafo"
 
 test("renders", () => {
     const Component = getTestComponent() as any
@@ -153,5 +154,15 @@ describe("Form Methods", () => {
         change("#field-first-name input[type=text]", "First Name")
 
         expect(form().getInvalidFields().indexOf(TestForm.FirstName)).toEqual(-1)
+    })
+})
+
+describe("Utilities", () => {
+    test("regexValidator", () => {
+        const validator = regexValidator(/^[a-z]{6}$/, "Invalid!")
+
+        expect(validator("foobar")).toEqual([ true, "" ])
+
+        expect(validator("foobar!")).toEqual([ false, "Invalid!" ])
     })
 })

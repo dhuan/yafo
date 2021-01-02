@@ -25,7 +25,7 @@ const formFields = (): Field<MyForm>[] => [
         id        : MyForm.FirstName,
         label     : "First name",
         type      : FieldType.TEXT,
-        valid     : regexValidator(/[a-zA-Z{3,10}]/.test(text as string), "Invalid first name!"),
+        valid     : regexValidator(/[a-zA-Z{3,10}]/, "Invalid first name!"),
         initial   : "",
         disabled  : false,
     },
@@ -33,7 +33,7 @@ const formFields = (): Field<MyForm>[] => [
         id        : MyForm.LastName,
         label     : "Last name",
         type      : FieldType.TEXT,
-        valid     : regexValidator(/[a-zA-Z{3,10}]/.test(text as string), "Invalid last name!"),
+        valid     : regexValidator(/[a-zA-Z{3,10}]/, "Invalid last name!"),
         initial   : "",
         disabled  : false,
     },
@@ -47,6 +47,10 @@ const MyFormPage = ({ form }: { form: Props<MyForm> }) => (
         { form.field(MyForm.LastName) }
         <br />
         <input type="submit" onClick={doSomething()} />
+    </div>
+
+    <div>
+        Your full name is { form.value(MyForm.FirstName) } { form.value(MyForm.LastName) }
     </div>
 )
 
