@@ -53,7 +53,7 @@ const formFields = (): Field<TestForm>[] => [
     {
         id        : TestForm.FirstName,
         label     : "First name",
-        type      : FieldType.TEXT,
+        type      : FieldType.Text,
         valid     : (text: Value) => [ /^[a-zA-Z\s]{3,20}$/.test(text as string), "Wrong first name, pal!" ],
         initial   : "",
         disabled  : false,
@@ -61,7 +61,7 @@ const formFields = (): Field<TestForm>[] => [
     {
         id        : TestForm.LastName,
         label     : "First name",
-        type      : FieldType.TEXT,
+        type      : FieldType.Text,
         valid     : (text: Value) => [ /^[a-zA-Z\s]{3,20}$/.test(text as string), "Wrong first name, pal!" ],
         initial   : "",
         disabled  : false,
@@ -69,7 +69,7 @@ const formFields = (): Field<TestForm>[] => [
     {
         id        : TestForm.Country,
         label     : "Country",
-        type      : FieldType.SELECT,
+        type      : FieldType.Select,
         valid     : (chosenCountry: Value) => [ chosenCountry > 0, "Choose a country!" ],
         initial   : 0,
         disabled  : false,
@@ -78,7 +78,7 @@ const formFields = (): Field<TestForm>[] => [
     {
         id        : TestForm.Gender,
         label     : "Gender",
-        type      : FieldType.RADIO,
+        type      : FieldType.Radio,
         valid     : (chosenGender: Value) => [ chosenGender > -1, "Choose a gender!" ],
         initial   : -1,
         disabled  : false,
@@ -87,7 +87,7 @@ const formFields = (): Field<TestForm>[] => [
     {
         id        : TestForm.Hobbies,
         label     : "Hobbies",
-        type      : FieldType.CHECKBOX,
+        type      : FieldType.Checkbox,
         valid     : (chosenHobbies: Value) => [ parseCheckboxFormValue(chosenHobbies as string).length > 0, "Please choose at least one hobby." ],
         initial   : "",
         disabled  : false,

@@ -15,7 +15,7 @@ const formFields = (): Field<PlaygroundForm>[] => [
     {
         id        : PlaygroundForm.FirstName,
         label     : "First name",
-        type      : FieldType.TEXT,
+        type      : FieldType.Text,
         valid     : regexValidator(/^[a-zA-Z]{3,10}$/, "Invalid first name!"),
         initial   : "",
         disabled  : false,
@@ -23,7 +23,7 @@ const formFields = (): Field<PlaygroundForm>[] => [
     {
         id        : PlaygroundForm.LastName,
         label     : "Last name",
-        type      : FieldType.TEXT,
+        type      : FieldType.Text,
         valid     : regexValidator(/^[a-zA-Z]{3,10}$/, "Invalid last name!"),
         initial   : "",
         disabled  : false,
@@ -31,7 +31,7 @@ const formFields = (): Field<PlaygroundForm>[] => [
     {
         id        : PlaygroundForm.Country,
         label     : "Country",
-        type      : FieldType.SELECT,
+        type      : FieldType.Select,
         valid     : (chosenCountry: Value) => [ chosenCountry > 0, "Choose a country!" ],
         initial   : 0,
         disabled  : false,
@@ -40,7 +40,7 @@ const formFields = (): Field<PlaygroundForm>[] => [
     {
         id        : PlaygroundForm.Gender,
         label     : "Gender",
-        type      : FieldType.RADIO,
+        type      : FieldType.Radio,
         valid     : (chosenGender: Value) => [ chosenGender > -1, "Please chose a gender." ],
         initial   : -1,
         disabled  : false,
@@ -49,7 +49,7 @@ const formFields = (): Field<PlaygroundForm>[] => [
     {
         id        : PlaygroundForm.Hobbies,
         label     : "Hobbies",
-        type      : FieldType.CHECKBOX,
+        type      : FieldType.Checkbox,
         valid     : (chosenHobbies: Value) => [ parseCheckboxFormValue(chosenHobbies as string).length > 0, "Please choose at least one hobby." ],
         initial   : "",
         disabled  : false,

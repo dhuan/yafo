@@ -150,8 +150,8 @@ const checkbox: FieldComponent =
 }
 
 export const fieldCollection: FieldCollection = new Map([
-    [ FieldType.TEXT, text ],
-    [ FieldType.SELECT, select ],
-    [ FieldType.RADIO, radio ],
-    [ FieldType.CHECKBOX, checkbox ],
+    [ FieldType.Text, text ],
+    [ FieldType.Select, select ],
+    [ FieldType.Radio, radio ],
+    [ FieldType.Checkbox, checkbox ],
 ])

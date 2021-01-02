@@ -1,6 +1,6 @@
 import React from 'react';
 
-export enum FieldType { TEXT, SELECT, RADIO, CHECKBOX }
+export enum FieldType { Text, Select, Radio, Checkbox }
 
 export type FieldCustomOptions = Record<string, any>
 

@@ -24,7 +24,7 @@ const formFields = (): Field<MyForm>[] => [
     {
         id        : MyForm.FirstName,
         label     : "First name",
-        type      : FieldType.TEXT,
+        type      : FieldType.Text,
         valid     : regexValidator(/[a-zA-Z{3,10}]/, "Invalid first name!"),
         initial   : "",
         disabled  : false,
@@ -32,7 +32,7 @@ const formFields = (): Field<MyForm>[] => [
     {
         id        : MyForm.LastName,
         label     : "Last name",
-        type      : FieldType.TEXT,
+        type      : FieldType.Text,
         valid     : regexValidator(/[a-zA-Z{3,10}]/, "Invalid last name!"),
         initial   : "",
         disabled  : false,
