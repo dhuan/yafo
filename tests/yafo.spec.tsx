@@ -3,7 +3,8 @@ import React from "react"
 import renderer from "react-test-renderer";
 import {act} from "@testing-library/react"
 import { renderTestForm, getTestComponent, TestForm } from "./utils";
-import { regexValidator } from "../src/yafo"
+import { validators } from "../src/yafo"
+import loginForm, { LoginForm } from "./forms/login"
 
 test("renders", () => {
     const Component = getTestComponent() as any
@@ -158,11 +159,44 @@ describe("Form Methods", () => {
 })
 
 describe("Utilities", () => {
-    test("regexValidator", () => {
-        const validator = regexValidator(/^[a-z]{6}$/, "Invalid!")
+    describe("validators", () => {
+        test("validators.regex", () => {
+            const validator = validators.regex(/^[a-z]{6}$/, "Invalid!")
 
-        expect(validator("foobar")).toEqual([ true, "" ])
+            expect(validator("foobar")).toEqual([ true, "" ])
 
-        expect(validator("foobar!")).toEqual([ false, "Invalid!" ])
+            expect(validator("foobar!")).toEqual([ false, "Invalid!" ])
+        })
+
+        test("validators.equalsField", () => {
+            const { form, change } = renderTestForm({
+                formComponent: loginForm.formComponent,
+                formFields: loginForm.formFields,
+            })
+
+            change("#field-user input[type=text]", "some_user")
+
+            change("#field-password input[type=text]", "some_password")
+
+            expect(form().getInvalidFields().indexOf(LoginForm.Password)).toEqual(-1)
+
+            act(() => {
+                form().validate()
+            })
+
+            expect(form().getInvalidFields().indexOf(LoginForm.PasswordRepeat)).toBeGreaterThan(-1)
+
+            change("#field-password-repeat input[type=text]", "some_different_password")
+
+            expect(form().getInvalidFields().indexOf(LoginForm.PasswordRepeat)).toBeGreaterThan(-1)
+
+            change("#field-password-repeat input[type=text]", "some-password")
+
+            expect(form().getInvalidFields().indexOf(LoginForm.PasswordRepeat)).toBeGreaterThan(-1)
+
+            change("#field-password-repeat input[type=text]", "some_password")
+
+            expect(form().getInvalidFields().indexOf(LoginForm.PasswordRepeat)).toEqual(-1)
+        })
     })
 })

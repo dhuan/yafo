@@ -6,6 +6,7 @@ import {
     FieldValidator,
     Field,
     FieldCollection,
+    FieldsDefinition,
     ValueFunc,
     Value,
     Props,
@@ -21,11 +22,14 @@ export {
     Field,
     OnChangeValueFunc,
     FieldCollection,
+    FieldsDefinition,
     ValueFunc,
     Value,
     Props,
     FieldComponent,
 } from './types';
+
+export { validators } from './validators';
 
 export { fieldCollection } from './field_collection';
 export { parseCheckboxFormValue } from './utils';
@@ -280,7 +284,7 @@ type FormBase<T> = React.ComponentClass<T> | React.FunctionComponent<T>
 export const withForm = <T extends unknown, TargetComponentProps extends unknown>(
     formName          : string,
     fieldCollection   : FieldCollection,
-    buildFields       : (props: TargetComponentProps) => Field<T>[],
+    buildFields       : FieldsDefinition<T, TargetComponentProps>,
     TargetComponent   : FormBase<TargetComponentProps>,
     optionsBase?      : Options<T, TargetComponentProps>,
 ): React.FunctionComponent<TargetComponentProps> => {
@@ -347,13 +351,6 @@ export const withForm = <T extends unknown, TargetComponentProps extends unknown
     }
 };
 
-export const regexValidator = (regex: RegExp, errorMessage: string) => (value: Value): [ boolean, string ] => {
-    if (typeof value === "string" && regex.test(value as string))
-        return [ true, "" ]
-
-    return [ false, errorMessage ]
-}
-
 export const rangeValidator = (from: number, to: number, errorMessage: string) => (value: Value): [ boolean, string ] => {
     const valueType = typeof value
 
@@ -368,7 +365,7 @@ export const rangeValidator = (from: number, to: number, errorMessage: string) =
 }
 
 export const validateAll =
-    <T extends unknown>(validators: FieldValidator[]) => (value: Value, formValue: (id: T) => Value): FieldValidationResult =>
+    <T extends unknown>(validators: FieldValidator<T>[]) => (value: Value, formValue: (id: T) => Value): FieldValidationResult =>
 {
     if (validators.length === 0)
         return [ true, "" ]

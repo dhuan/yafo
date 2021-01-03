@@ -19,13 +19,13 @@ export type FieldOption = string | boolean | number | string[]
 
 export type FieldValidationResult = [ boolean, string ]
 
-export type FieldValidator = <T>(value: Value, formValue: (id: T) => Value) => FieldValidationResult
+export type FieldValidator<T> = (value: Value, formValue: (id: T) => Value) => FieldValidationResult
 
 export type Field<T> = {
     id         : T
     label      : string
     type       : FieldType
-    valid      : FieldValidator
+    valid      : FieldValidator<T>
     initial    : Value
     disabled?  : boolean
     options?   : string[]
@@ -58,3 +58,5 @@ export type Props<T> =  {
 export type FieldComponent = React.FunctionComponent<FieldComponentProps>
 
 export type FieldCollection = Map<FieldType, FieldComponent>
+
+export type FieldsDefinition<FormType, TargetComponentProps> = (props: TargetComponentProps) => Field<FormType>[]

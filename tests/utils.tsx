@@ -1,13 +1,21 @@
 import '@testing-library/jest-dom'
 import React from "react"
-import { withForm, FieldType, Props, fieldCollection, Field, Value, parseCheckboxFormValue } from "../src/yafo"
+import { withForm, FieldType, Props, fieldCollection, Field, Value, parseCheckboxFormValue, FieldsDefinition } from "../src/yafo"
 import {render, fireEvent} from '@testing-library/react'
 
 export enum TestForm { FirstName, LastName, Country, Gender, Hobbies, Unused }
 
-const TestComponent = ({ form, callback, getForm }: { form: Props<TestForm>, callback: any, getForm?: any }) => {
+export type CustomTest<FormType, TargetComponentProps> = {
+    formComponent   : any,
+    formFields      : FieldsDefinition<FormType, TargetComponentProps>
+}
+
+const TestComponent = <FormType, TargetComponentProps>(customTest?: CustomTest<FormType, TargetComponentProps>) => ({ form, callback, getForm }: { form: Props<TestForm>, callback: any, getForm?: any }) => {
     if (getForm)
         getForm(form)
+
+    if (customTest)
+        return customTest.formComponent(form)
 
     return (
         <div>
@@ -106,12 +114,12 @@ const click = (container: any) => (selector: string) =>
 const clickNth = (container: any) => (selector: string, nth: number) =>
     fireEvent.click(container.querySelectorAll(selector)[nth]);
 
-export const getTestComponent = () =>
+export const getTestComponent = <FormType, TargetComponentProps>(customTest?: CustomTest<FormType, TargetComponentProps>) =>
     withForm(
         "test_form",
         fieldCollection,
-        formFields,
-        TestComponent,
+        customTest ? customTest.formFields : formFields,
+        TestComponent(customTest),
         { errorMessagesVisible: false }
     )
 
@@ -131,8 +139,8 @@ const fillFormWithValidFields = (change: any, click: any, clickNth: any) => () =
     click("[data-testid=submit]")
 }
 
-export const renderTestForm = () => {
-    const Component = getTestComponent() as any
+export const renderTestForm = <FormType, TargetComponentProps>(customTest?: CustomTest<FormType, TargetComponentProps>) => {
+    const Component = getTestComponent(customTest) as any
 
     let form: any = null
 
