@@ -16,9 +16,18 @@ const equalsField =
     return [ false, errorMessage ]
 }
 
+const minLength =
+    <T>(length: number, errorMessage: string): FieldValidator<T> => (value: Value, _: (id: T) => Value): FieldValidationResult =>
+{
+    const valid = typeof value === "string" && (value as string).length >= length
+
+    return [ valid, valid ? "" : errorMessage ]
+}
+
 const validators = {
     regex,
     equalsField,
+    minLength,
 }
 
 export { validators }

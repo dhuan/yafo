@@ -1,6 +1,9 @@
 import '@testing-library/jest-dom'
 import React from "react"
-import { withForm, FieldType, Props, fieldCollection, Field, Value, parseCheckboxFormValue, FieldsDefinition } from "../src/yafo"
+import { withForm, FieldType, Props, fieldCollection,
+         Field, Value, parseCheckboxFormValue, FieldsDefinition,
+         FieldValidator, FieldValidationResult
+       } from "../src/yafo"
 import {render, fireEvent} from '@testing-library/react'
 
 export enum TestForm { FirstName, LastName, Country, Gender, Hobbies, Unused }
@@ -166,3 +169,6 @@ export const renderTestForm = <FormType, TargetComponentProps>(customTest?: Cust
         ),
     }
 }
+
+export const callValidator = <T extends unknown>(validator: FieldValidator<T>) => (value: Value): FieldValidationResult =>
+    validator(value, () => "")

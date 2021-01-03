@@ -2,7 +2,7 @@ import '@testing-library/jest-dom'
 import React from "react"
 import renderer from "react-test-renderer";
 import {act} from "@testing-library/react"
-import { renderTestForm, getTestComponent, TestForm } from "./utils";
+import { renderTestForm, getTestComponent, TestForm, callValidator } from "./utils";
 import { validators } from "../src/yafo"
 import loginForm, { LoginForm } from "./forms/login"
 
@@ -163,9 +163,23 @@ describe("Utilities", () => {
         test("validators.regex", () => {
             const validator = validators.regex(/^[a-z]{6}$/, "Invalid!")
 
-            expect(validator("foobar", () => "")).toEqual([ true, "" ])
+            const callTestValidator = callValidator(validator)
 
-            expect(validator("foobar!", () => "")).toEqual([ false, "Invalid!" ])
+            expect(callTestValidator("foobar")).toEqual([ true, "" ])
+
+            expect(callTestValidator("foobar!")).toEqual([ false, "Invalid!" ])
+        })
+
+        test("validators.minLength", () => {
+            const validator = validators.minLength(5, "Invalid!")
+
+            const callTestValidator = callValidator(validator)
+
+            expect(callTestValidator("1234")).toEqual([ false, "Invalid!" ])
+
+            expect(callTestValidator("12345")).toEqual([ true, "" ])
+
+            expect(callTestValidator("123456")).toEqual([ true, "" ])
         })
 
         test("validators.equalsField", () => {
