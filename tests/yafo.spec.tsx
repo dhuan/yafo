@@ -163,9 +163,9 @@ describe("Utilities", () => {
         test("validators.regex", () => {
             const validator = validators.regex(/^[a-z]{6}$/, "Invalid!")
 
-            expect(validator("foobar")).toEqual([ true, "" ])
+            expect(validator("foobar", () => "")).toEqual([ true, "" ])
 
-            expect(validator("foobar!")).toEqual([ false, "Invalid!" ])
+            expect(validator("foobar!", () => "")).toEqual([ false, "Invalid!" ])
         })
 
         test("validators.equalsField", () => {

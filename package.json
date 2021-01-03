@@ -5,7 +5,7 @@
   "main": "dist/yafo.js",
   "typings": "dist/yafo.d.ts",
   "scripts": {
-    "test": "./node_modules/.bin/jest ./tests",
+    "test": "./node_modules/.bin/jest --no-cache ./tests",
     "test:watch": "./node_modules/.bin/jest ./tests --watch",
     "build": "./node_modules/.bin/tsc",
     "playground:build": "npm run playground:update_yafo; cd playground; npm install",

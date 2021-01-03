@@ -118,7 +118,7 @@ export const getTestComponent = <FormType, TargetComponentProps>(customTest?: Cu
     withForm(
         "test_form",
         fieldCollection,
-        customTest ? customTest.formFields : formFields,
+        customTest ? customTest.formFields : formFields as any,
         TestComponent(customTest),
         { errorMessagesVisible: false }
     )
