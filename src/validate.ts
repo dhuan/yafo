@@ -31,7 +31,7 @@ const checkBoxMin = <T>(min: number, errorMessage: string): FieldValidator<T> =>
     return [ valid, valid ? "" : errorMessage, ]
 }
 
-const validators = {
+const validate = {
     regex,
     equalsField,
     minLength,
@@ -40,4 +40,4 @@ const validators = {
     }
 }
 
-export { validators }
+export { validate }

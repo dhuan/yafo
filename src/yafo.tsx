@@ -29,7 +29,7 @@ export {
     FieldComponent,
 } from './types';
 
-export { validators } from './validators';
+export { validate } from './validate';
 
 export { fieldCollection } from './field_collection';
 export { parseCheckboxFormValue } from './utils';

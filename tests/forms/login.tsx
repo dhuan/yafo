@@ -1,5 +1,5 @@
 import React from "react"
-import { FieldType, Field, Value, validators } from "../../src/yafo"
+import { FieldType, Field, Value, validate } from "../../src/yafo"
 
 const formComponent = (form: any) => (
     <div>
@@ -35,7 +35,7 @@ const formFields = (): Field<LoginForm>[] => [
         id        : LoginForm.User,
         label     : "User",
         type      : FieldType.Text,
-        valid     : validators.regex(/^[a-zA-Z_]{3,}$/, "Invalid user!"),
+        valid     : validate.regex(/^[a-zA-Z_]{3,}$/, "Invalid user!"),
         initial   : "",
         disabled  : false,
     },
@@ -43,7 +43,7 @@ const formFields = (): Field<LoginForm>[] => [
         id        : LoginForm.Password,
         label     : "Password",
         type      : FieldType.Text,
-        valid     : validators.regex(/^[a-zA-Z_]{3,}$/, "Invalid password!"),
+        valid     : validate.regex(/^[a-zA-Z_]{3,}$/, "Invalid password!"),
         initial   : "",
         disabled  : false,
     },
@@ -51,7 +51,7 @@ const formFields = (): Field<LoginForm>[] => [
         id        : LoginForm.PasswordRepeat,
         label     : "Password Again",
         type      : FieldType.Text,
-        valid     : validators.equalsField(LoginForm.Password, "Passwords must match!"),
+        valid     : validate.equalsField(LoginForm.Password, "Passwords must match!"),
         initial   : "",
         disabled  : false,
     },

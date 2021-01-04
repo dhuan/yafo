@@ -18,7 +18,7 @@ with callbacks and props and all kinds of custom logic for each field.
 [Check this example in CodeSandbox.](https://codesandbox.io/s/yafo-example-yomb9)
 
 ```sh
-import { withForm, fieldCollection, FieldType, Field, Props, validators } from "yafo";
+import { withForm, fieldCollection, FieldType, Field, Props, validate } from "yafo";
 
 enum MyForm { FirstName, LastName }
 
@@ -27,13 +27,13 @@ const formFields = (): Field<MyForm>[] => [
         id        : MyForm.FirstName,
         label     : "First name",
         type      : FieldType.Text,
-        valid     : validators.regex(/[a-zA-Z{3,10}]/, "Invalid first name!"),
+        valid     : validate.regex(/[a-zA-Z{3,10}]/, "Invalid first name!"),
     },
     {
         id        : MyForm.LastName,
         label     : "Last name",
         type      : FieldType.Text,
-        valid     : validators.regex(/[a-zA-Z{3,10}]/, "Invalid last name!"),
+        valid     : validate.regex(/[a-zA-Z{3,10}]/, "Invalid last name!"),
     },
     // Other fields...
 ]

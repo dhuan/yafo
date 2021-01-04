@@ -3,7 +3,7 @@ import React from "react"
 import renderer from "react-test-renderer";
 import {act} from "@testing-library/react"
 import { renderTestForm, getTestComponent, TestForm, callValidator } from "./utils";
-import { validators } from "../src/yafo"
+import { validate } from "../src/yafo"
 import loginForm, { LoginForm } from "./forms/login"
 
 test("renders", () => {
@@ -159,9 +159,9 @@ describe("Form Methods", () => {
 })
 
 describe("Utilities", () => {
-    describe("validators", () => {
-        test("validators.regex", () => {
-            const validator = validators.regex(/^[a-z]{6}$/, "Invalid!")
+    describe("validate", () => {
+        test("validate.regex", () => {
+            const validator = validate.regex(/^[a-z]{6}$/, "Invalid!")
 
             const callTestValidator = callValidator(validator)
 
@@ -170,8 +170,8 @@ describe("Utilities", () => {
             expect(callTestValidator("foobar!")).toEqual([ false, "Invalid!" ])
         })
 
-        test("validators.minLength", () => {
-            const validator = validators.minLength(5, "Invalid!")
+        test("validate.minLength", () => {
+            const validator = validate.minLength(5, "Invalid!")
 
             const callTestValidator = callValidator(validator)
 
@@ -182,7 +182,7 @@ describe("Utilities", () => {
             expect(callTestValidator("123456")).toEqual([ true, "" ])
         })
 
-        test("validators.equalsField", () => {
+        test("validate.equalsField", () => {
             const { form, change } = renderTestForm({
                 formComponent: loginForm.formComponent,
                 formFields: loginForm.formFields,
@@ -213,7 +213,7 @@ describe("Utilities", () => {
             expect(form().getInvalidFields().indexOf(LoginForm.PasswordRepeat)).toEqual(-1)
         })
 
-        test("validators.checkbox.min", () => {
+        test("validate.checkbox.min", () => {
             // The hobbies checkbox field is only valid if 2 hobbies are selected
 
             const { form, clickNth } = renderTestForm()
