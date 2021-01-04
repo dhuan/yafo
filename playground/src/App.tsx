@@ -50,7 +50,7 @@ const formFields = (): Field<PlaygroundForm>[] => [
         id        : PlaygroundForm.Hobbies,
         label     : "Hobbies",
         type      : FieldType.Checkbox,
-        valid     : (chosenHobbies: Value) => [ parseCheckboxFormValue(chosenHobbies as string).length > 0, "Please choose at least one hobby." ],
+        valid     : validators.checkbox.min(1, "Please choose at least one hobby."),
         initial   : "",
         disabled  : false,
         options   : hobbyOptions,

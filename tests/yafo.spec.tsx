@@ -212,5 +212,29 @@ describe("Utilities", () => {
 
             expect(form().getInvalidFields().indexOf(LoginForm.PasswordRepeat)).toEqual(-1)
         })
+
+        test("validators.checkbox.min", () => {
+            // The hobbies checkbox field is only valid if 2 hobbies are selected
+
+            const { form, clickNth } = renderTestForm()
+
+            // No hobbies selected: invalid
+            expect(form().getInvalidFields().indexOf(TestForm.Hobbies)).toBeGreaterThan(-1)
+
+            clickNth("input[type=checkbox]", 0)
+
+            // Only one hobby selected: invalid
+            expect(form().getInvalidFields().indexOf(TestForm.Hobbies)).toBeGreaterThan(-1)
+
+            clickNth("input[type=checkbox]", 1)
+
+            // 2 hobbies selected: valid
+            expect(form().getInvalidFields().indexOf(TestForm.Hobbies)).toEqual(-1)
+
+            clickNth("input[type=checkbox]", 2)
+
+            // 3 hobbies selected: valid
+            expect(form().getInvalidFields().indexOf(TestForm.Hobbies)).toEqual(-1)
+        })
     })
 })

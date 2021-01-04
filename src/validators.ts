@@ -1,4 +1,5 @@
 import { Value, FieldValidator, FieldValidationResult } from "./types"
+import { parseCheckboxFormValue } from "./utils"
 
 const regex = <T>(regex: RegExp, errorMessage: string): FieldValidator<T> => (value: Value): [ boolean, string ] => {
     if (typeof value === "string" && regex.test(value as string))
@@ -24,10 +25,19 @@ const minLength =
     return [ valid, valid ? "" : errorMessage ]
 }
 
+const checkBoxMin = <T>(min: number, errorMessage: string): FieldValidator<T> => (chosenOptions: Value) => {
+    const valid = parseCheckboxFormValue(chosenOptions as string).length >= min
+
+    return [ valid, valid ? "" : errorMessage, ]
+}
+
 const validators = {
     regex,
     equalsField,
     minLength,
+    checkbox: {
+        min: checkBoxMin
+    }
 }
 
 export { validators }

@@ -21,6 +21,9 @@ const formComponent = (form: any) => (
             data-testid="submit"
             type="button"
             value="Login!"
+            onClick={() => {
+                form.showErrorMessages()
+            }}
         />
     </div>
 )

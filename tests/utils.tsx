@@ -2,7 +2,7 @@ import '@testing-library/jest-dom'
 import React from "react"
 import { withForm, FieldType, Props, fieldCollection,
          Field, Value, parseCheckboxFormValue, FieldsDefinition,
-         FieldValidator, FieldValidationResult
+         FieldValidator, FieldValidationResult, validators
        } from "../src/yafo"
 import {render, fireEvent} from '@testing-library/react'
 
@@ -99,7 +99,7 @@ const formFields = (): Field<TestForm>[] => [
         id        : TestForm.Hobbies,
         label     : "Hobbies",
         type      : FieldType.Checkbox,
-        valid     : (chosenHobbies: Value) => [ parseCheckboxFormValue(chosenHobbies as string).length > 0, "Please choose at least one hobby." ],
+        valid     : validators.checkbox.min(2, "Please choose at least two hobbies."),
         initial   : "",
         disabled  : false,
         options   : ["Soccer", "Movies", "Music", "Books"],
