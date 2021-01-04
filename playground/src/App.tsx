@@ -90,6 +90,7 @@ const FormComponentBase = ({ form, callback }: PlaygroundFormProps) => {
             <input
                 data-testid="submit"
                 type="button"
+                disabled={!form.valid}
                 value="Submit Form"
                 onClick={() => {
                     form.showErrorMessages()

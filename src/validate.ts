@@ -25,16 +25,42 @@ const minLength =
     return [ valid, valid ? "" : errorMessage ]
 }
 
+const maxLength =
+    <T>(length: number, errorMessage: string): FieldValidator<T> => (value: Value, _: (id: T) => Value): FieldValidationResult =>
+{
+    const valid = typeof value === "string" && (value as string).length <= length
+
+    return [ valid, valid ? "" : errorMessage ]
+}
+
 const checkBoxMin = <T>(min: number, errorMessage: string): FieldValidator<T> => (chosenOptions: Value) => {
     const valid = parseCheckboxFormValue(chosenOptions as string).length >= min
 
     return [ valid, valid ? "" : errorMessage, ]
 }
 
+export const all =
+    <T>(validators: FieldValidator<T>[]): FieldValidator<T> => (value: Value, formValue: (id: T) => Value): FieldValidationResult =>
+{
+    if (validators.length === 0)
+        return [ true, "" ]
+
+    const validator = validators[0]
+
+    const [ result, errorMessage ] = validator(value, formValue)
+
+    if (!result)
+        return [ false, errorMessage ]
+
+    return all(validators.slice(1))(value, formValue as any)
+}
+
 const validate = {
+    all,
     regex,
     equalsField,
     minLength,
+    maxLength,
     checkbox: {
         min: checkBoxMin
     }

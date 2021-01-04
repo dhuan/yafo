@@ -182,6 +182,20 @@ describe("Utilities", () => {
             expect(callTestValidator("123456")).toEqual([ true, "" ])
         })
 
+        test("validate.maxLength", () => {
+            const validator = validate.maxLength(5, "Invalid!")
+
+            const callTestValidator = callValidator(validator)
+
+            expect(callTestValidator("1234")).toEqual([ true, "" ])
+
+            expect(callTestValidator("12345")).toEqual([ true, "" ])
+
+            expect(callTestValidator("123456")).toEqual([ false, "Invalid!" ])
+
+            expect(callTestValidator("1234567")).toEqual([ false, "Invalid!" ])
+        })
+
         test("validate.equalsField", () => {
             const { form, change } = renderTestForm({
                 formComponent: loginForm.formComponent,
@@ -235,6 +249,29 @@ describe("Utilities", () => {
 
             // 3 hobbies selected: valid
             expect(form().getInvalidFields().indexOf(TestForm.Hobbies)).toEqual(-1)
+        })
+
+        test("validate.all", () => {
+            const validator = validate.all([
+                validate.minLength(5, "Need more!"),
+                validate.maxLength(7, "Need less!"),
+            ])
+
+            const callTestValidator = callValidator(validator)
+
+            expect(callTestValidator("123")).toEqual([ false, "Need more!" ])
+
+            expect(callTestValidator("1234")).toEqual([ false, "Need more!" ])
+
+            expect(callTestValidator("12345")).toEqual([ true, "" ])
+
+            expect(callTestValidator("123456")).toEqual([ true, "" ])
+
+            expect(callTestValidator("1234567")).toEqual([ true, "" ])
+
+            expect(callTestValidator("12345678")).toEqual([ false, "Need less!" ])
+
+            expect(callTestValidator("123456789")).toEqual([ false, "Need less!" ])
         })
     })
 })

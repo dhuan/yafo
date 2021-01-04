@@ -363,19 +363,3 @@ export const rangeValidator = (from: number, to: number, errorMessage: string) =
 
     return [ inRange, errorMessage ]
 }
-
-export const validateAll =
-    <T extends unknown>(validators: FieldValidator<T>[]) => (value: Value, formValue: (id: T) => Value): FieldValidationResult =>
-{
-    if (validators.length === 0)
-        return [ true, "" ]
-
-    const validator = validators[0]
-
-    const [ result, errorMessage ] = validator(value, formValue)
-
-    if (!result)
-        return [ false, errorMessage ]
-
-    return validateAll(validators.slice(1))(value, formValue as any)
-}
