@@ -1,6 +1,6 @@
 import React from 'react';
 import { FieldComponentProps } from "./yafo"
-import { FieldType, FieldComponent, FieldCollection } from "./types"
+import { FieldType, FieldComponent, FieldComponents } from "./types"
 import { toNumber, parseCheckboxFormValue, serializeCheckboxValue } from "./utils"
 
 const styles = {
@@ -149,7 +149,7 @@ const checkbox: FieldComponent =
     )
 }
 
-export const fieldCollection: FieldCollection = new Map([
+export const fieldComponents: FieldComponents = new Map([
     [ FieldType.Text, text ],
     [ FieldType.Select, select ],
     [ FieldType.Radio, radio ],

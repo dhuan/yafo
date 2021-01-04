@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { withForm, fieldCollection, FieldType, Value, Field, Props, parseCheckboxFormValue, validate } from './yafo/yafo.js';
+import { withForm, standardFieldComponents, FieldType, Value, Field, Props, parseCheckboxFormValue, validate } from './yafo/yafo.js';
 
 enum PlaygroundForm { FirstName, LastName, Country, Gender, Hobbies }
 
@@ -113,7 +113,7 @@ const FormComponentBase = ({ form, callback }: PlaygroundFormProps) => {
 
 const FormComponent: any = withForm<PlaygroundForm, PlaygroundFormProps>(
     "playground_form",
-    fieldCollection,
+    standardFieldComponents,
     formFields,
     FormComponentBase,
     { errorMessagesVisible: false }

@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import React from "react"
-import { withForm, FieldType, Props, fieldCollection,
+import { withForm, FieldType, Props, standardFieldComponents,
          Field, Value, parseCheckboxFormValue, FieldsDefinition,
          FieldValidator, FieldValidationResult, validate
        } from "../src/yafo"
@@ -120,7 +120,7 @@ const clickNth = (container: any) => (selector: string, nth: number) =>
 export const getTestComponent = <FormType, TargetComponentProps>(customTest?: CustomTest<FormType, TargetComponentProps>) =>
     withForm(
         "test_form",
-        fieldCollection,
+        standardFieldComponents,
         customTest ? customTest.formFields : formFields as any,
         TestComponent(customTest),
         { errorMessagesVisible: false }

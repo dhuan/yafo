@@ -57,6 +57,6 @@ export type Props<T> =  {
 
 export type FieldComponent = React.FunctionComponent<FieldComponentProps>
 
-export type FieldCollection = Map<FieldType, FieldComponent>
+export type FieldComponents = Map<FieldType, FieldComponent>
 
 export type FieldsDefinition<FormType, TargetComponentProps> = (props: TargetComponentProps) => Field<FormType>[]

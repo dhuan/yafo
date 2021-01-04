@@ -18,7 +18,7 @@ with callbacks and props and all kinds of custom logic for each field.
 [Check this example in CodeSandbox.](https://codesandbox.io/s/yafo-example-yomb9)
 
 ```sh
-import { withForm, fieldCollection, FieldType, Field, Props, validate } from "yafo";
+import { withForm, standardFieldComponents, FieldType, Field, Props, validate } from "yafo";
 
 enum MyForm { FirstName, LastName }
 
@@ -57,7 +57,7 @@ const MyFormPage = ({ form }: { form: Props<MyForm> }) => (
 
 export default withForm(
     "my_form",
-    fieldCollection,
+    standardFieldComponents,
     formFields,
     MyFormPage
 )
@@ -95,9 +95,9 @@ Yafo plays well if your form page consists of form fields that consistently
 follow the same UI style. For example, if two text fields don't look the same
 in your app, you're better off using something else probably.
 
-### The built-in Field Collections are very simplistic and don't meet my requirements, what can I do?
+### The built-in Field Components are very simplistic and don't meet my requirements, what can I do?
 
-Read about Field Collections. You can either build your own Field Collection
+Read about Field Components. You can either build your own Field Components
 satisfying your design's requirements or install an existing one.
 
 ### I've built my form with Yafo, but in the end I didn't end up with fewer lines of code than if I used another form library. Why is that?

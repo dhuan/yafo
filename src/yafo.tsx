@@ -5,7 +5,7 @@ import {
     FieldValidationResult,
     FieldValidator,
     Field,
-    FieldCollection,
+    FieldComponents,
     FieldsDefinition,
     ValueFunc,
     Value,
@@ -21,7 +21,7 @@ export {
     FieldValidator,
     Field,
     OnChangeValueFunc,
-    FieldCollection,
+    FieldComponents,
     FieldsDefinition,
     ValueFunc,
     Value,
@@ -31,7 +31,7 @@ export {
 
 export { validate } from './validate';
 
-export { fieldCollection } from './field_collection';
+export { fieldComponents as standardFieldComponents } from './field_components';
 export { parseCheckboxFormValue } from './utils';
 
 const changeStateValue = <T extends unknown>(field: Field<T>, state: State, formValue: ValueFunc) => (index: number) => (newValue: Value): void => {
@@ -67,7 +67,7 @@ const getFieldComponent = <T_FieldType extends unknown, T_TargetComponentProps e
     fieldValid          : boolean,
     errorMessageBase    : string,
     index               : number,
-    fieldCollection     : FieldCollection,
+    fieldComponents     : FieldComponents,
     formActive          : boolean,
     options             : Options<T_FieldType, T_TargetComponentProps>,
     inputIds            : string[],
@@ -83,7 +83,7 @@ const getFieldComponent = <T_FieldType extends unknown, T_TargetComponentProps e
 
     const inputId = inputIds[index]
 
-    const Component: FieldComponent = fieldCollection.get(field.type) as FieldComponent
+    const Component: FieldComponent = fieldComponents.get(field.type) as FieldComponent
 
     if (!Component)
         throw new Error(`Could not get form field component for ${field.type}`);
@@ -102,12 +102,12 @@ const getFieldComponent = <T_FieldType extends unknown, T_TargetComponentProps e
     )
 }
 
-const toFieldComponents = <T_FieldType extends unknown, T_TargetComponentProps extends unknown>(
+const instantiateFieldComponents = <T_FieldType extends unknown, T_TargetComponentProps extends unknown>(
     formName        : string,
     fields          : Field<T_FieldType>[],
     state           : State,
     map             : Map<T_FieldType, React.ReactElement>,
-    fieldCollection : FieldCollection,
+    fieldComponents : FieldComponents,
     options         : Options<T_FieldType, T_TargetComponentProps>,
     formValue       : ValueFunc,
     formActive      : boolean,
@@ -136,7 +136,7 @@ const toFieldComponents = <T_FieldType extends unknown, T_TargetComponentProps e
         fieldValid,
         fieldErrorMessage,
         index,
-        fieldCollection,
+        fieldComponents,
         formActive,
         options,
         inputIds,
@@ -144,7 +144,7 @@ const toFieldComponents = <T_FieldType extends unknown, T_TargetComponentProps e
 
     map.set(field.id, FieldComponent);
 
-    return toFieldComponents(formName, fields, state, map, fieldCollection, options, formValue, formActive, inputIds, index + 1);
+    return instantiateFieldComponents(formName, fields, state, map, fieldComponents, options, formValue, formActive, inputIds, index + 1);
 }
 
 type State = {
@@ -283,7 +283,7 @@ type FormBase<T> = React.ComponentClass<T> | React.FunctionComponent<T>
 
 export const withForm = <T extends unknown, TargetComponentProps extends unknown>(
     formName          : string,
-    fieldCollection   : FieldCollection,
+    fieldComponents   : FieldComponents,
     buildFields       : FieldsDefinition<T, TargetComponentProps>,
     TargetComponent   : FormBase<TargetComponentProps>,
     optionsBase?      : Options<T, TargetComponentProps>,
@@ -315,12 +315,12 @@ export const withForm = <T extends unknown, TargetComponentProps extends unknown
 
         const getFormValue = formValue<T>(values, fieldIds) as ValueFunc
 
-        const fieldComponents = toFieldComponents(
+        const fieldComponentsInstantiated = instantiateFieldComponents(
             formName,
             fields,
             state,
             new Map(),
-            fieldCollection,
+            fieldComponents,
             options,
             getFormValue,
             formActive,
@@ -328,7 +328,7 @@ export const withForm = <T extends unknown, TargetComponentProps extends unknown
         );
 
         const formProps: Props<T> = {
-            field                  : mapGetter<T, React.ReactElement>(fieldComponents, "Could not find field component."),
+            field                  : mapGetter<T, React.ReactElement>(fieldComponentsInstantiated, "Could not find field component."),
             dirty,
             validate               : validateForm(fields, state, getFormValue),
             valid                  : allEqual<boolean>(true, validation),
