@@ -17,6 +17,14 @@ const equalsField =
     return [ false, errorMessage ]
 }
 
+const equals =
+    <T>(expectedValue: Value, errorMessage: string): FieldValidator<T> => (value: Value, getFieldValue: (id: T) => Value): FieldValidationResult =>
+{
+    const valid = expectedValue === value
+
+    return [ valid, valid ? "" : errorMessage ]
+}
+
 const minLength =
     <T>(length: number, errorMessage: string): FieldValidator<T> => (value: Value, _: (id: T) => Value): FieldValidationResult =>
 {
@@ -55,10 +63,15 @@ export const all =
     return all(validators.slice(1))(value, formValue as any)
 }
 
+export const none = <T>(_value: Value, _formValue: (id: T) => Value): FieldValidationResult =>
+    [ true, "" ]
+
 const validate = {
+    none,
     all,
     regex,
     equalsField,
+    equals,
     minLength,
     maxLength,
     checkbox: {

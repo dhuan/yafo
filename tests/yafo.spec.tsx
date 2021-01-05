@@ -227,6 +227,18 @@ describe("Utilities", () => {
             expect(form().getInvalidFields().indexOf(LoginForm.PasswordRepeat)).toEqual(-1)
         })
 
+        test("validate.equals", () => {
+            const validator = validate.equals("foobar", "Invalid!")
+
+            const callTestValidator = callValidator(validator)
+
+            expect(callTestValidator("123")).toEqual([ false, "Invalid!" ])
+
+            expect(callTestValidator("hello")).toEqual([ false, "Invalid!" ])
+
+            expect(callTestValidator("foobar")).toEqual([ true, "" ])
+        })
+
         test("validate.checkbox.min", () => {
             // The hobbies checkbox field is only valid if 2 hobbies are selected
 
@@ -272,6 +284,16 @@ describe("Utilities", () => {
             expect(callTestValidator("12345678")).toEqual([ false, "Need less!" ])
 
             expect(callTestValidator("123456789")).toEqual([ false, "Need less!" ])
+        })
+
+        test("validate.none", () => {
+            const validator = validate.none
+
+            const callTestValidator = callValidator(validator)
+
+            expect(callTestValidator("123")).toEqual([ true, "" ])
+
+            expect(callTestValidator("1234")).toEqual([ true, "" ])
         })
     })
 })
