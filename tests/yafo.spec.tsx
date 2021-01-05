@@ -286,6 +286,23 @@ describe("Utilities", () => {
             expect(callTestValidator("123456789")).toEqual([ false, "Need less!" ])
         })
 
+        test("validate.any", () => {
+            const validator = validate.any([
+                validate.equals("foo", "Invalid!"),
+                validate.equals("bar", "Invalid!"),
+            ], "Invalid!")
+
+            const callTestValidator = callValidator(validator)
+
+            expect(callTestValidator("foobar")).toEqual([ false, "Invalid!" ])
+
+            expect(callTestValidator("foo bar")).toEqual([ false, "Invalid!" ])
+
+            expect(callTestValidator("foo")).toEqual([ true, "" ])
+
+            expect(callTestValidator("bar")).toEqual([ true, "" ])
+        })
+
         test("validate.none", () => {
             const validator = validate.none
 

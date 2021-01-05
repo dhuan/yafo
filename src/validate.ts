@@ -63,12 +63,29 @@ export const all =
     return all(validators.slice(1))(value, formValue as any)
 }
 
+export const any =
+    <T>(validators: FieldValidator<T>[], errorMessage: string): FieldValidator<T> => (value: Value, formValue: (id: T) => Value): FieldValidationResult =>
+{
+    if (validators.length === 0)
+        return [ false, errorMessage ]
+
+    const validator = validators[0]
+
+    const [ result ] = validator(value, formValue)
+
+    if (result)
+        return [ true, "" ]
+
+    return any(validators.slice(1), errorMessage)(value, formValue as any)
+}
+
 export const none = <T>(_value: Value, _formValue: (id: T) => Value): FieldValidationResult =>
     [ true, "" ]
 
 const validate = {
     none,
     all,
+    any,
     regex,
     equalsField,
     equals,
