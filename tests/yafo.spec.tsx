@@ -196,6 +196,46 @@ describe("Utilities", () => {
             expect(callTestValidator("1234567")).toEqual([ false, "Invalid!" ])
         })
 
+        test("validate.min", () => {
+            const validator = validate.min(5, "Invalid!")
+
+            const callTestValidator = callValidator(validator)
+
+            expect(callTestValidator(4)).toEqual([ false, "Invalid!" ])
+
+            expect(callTestValidator(5)).toEqual([ true, "" ])
+
+            expect(callTestValidator(6)).toEqual([ true, "" ])
+
+            // Same tests as above, but now with strings instead of numbers.
+
+            expect(callTestValidator("4")).toEqual([ false, "Invalid!" ])
+
+            expect(callTestValidator("5")).toEqual([ true, "" ])
+
+            expect(callTestValidator("6")).toEqual([ true, "" ])
+        })
+
+        test("validate.max", () => {
+            const validator = validate.max(5, "Invalid!")
+
+            const callTestValidator = callValidator(validator)
+
+            expect(callTestValidator(4)).toEqual([ true, "" ])
+
+            expect(callTestValidator(5)).toEqual([ true, "" ])
+
+            expect(callTestValidator(6)).toEqual([ false, "Invalid!" ])
+
+            // Same tests as above, but now with strings instead of numbers.
+
+            expect(callTestValidator("4")).toEqual([ true, "" ])
+
+            expect(callTestValidator("5")).toEqual([ true, "" ])
+
+            expect(callTestValidator("6")).toEqual([ false, "Invalid!" ])
+        })
+
         test("validate.equalsField", () => {
             const { form, change } = renderTestForm({
                 formComponent: loginForm.formComponent,

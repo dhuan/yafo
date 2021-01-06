@@ -1,5 +1,5 @@
 import { Value, FieldValidator, FieldValidationResult } from "./types"
-import { parseCheckboxFormValue } from "./utils"
+import { parseCheckboxFormValue, toNumber } from "./utils"
 
 const regex = <T>(regex: RegExp, errorMessage: string): FieldValidator<T> => (value: Value): [ boolean, string ] => {
     if (typeof value === "string" && regex.test(value as string))
@@ -37,6 +37,28 @@ const maxLength =
     <T>(length: number, errorMessage: string): FieldValidator<T> => (value: Value, _: (id: T) => Value): FieldValidationResult =>
 {
     const valid = typeof value === "string" && (value as string).length <= length
+
+    return [ valid, valid ? "" : errorMessage ]
+}
+
+const min =
+    <T>(desiredMinimum: number, errorMessage: string): FieldValidator<T> => (value: Value, getValue: (id: T) => Value): FieldValidationResult =>
+{
+    if (typeof value !== "number")
+        return min(desiredMinimum, errorMessage)(toNumber(value), getValue as any)
+
+    const valid = (value as number) >= desiredMinimum
+
+    return [ valid, valid ? "" : errorMessage ]
+}
+
+const max =
+    <T>(desiredMax: number, errorMessage: string): FieldValidator<T> => (value: Value, getValue: (id: T) => Value): FieldValidationResult =>
+{
+    if (typeof value !== "number")
+        return max(desiredMax, errorMessage)(toNumber(value), getValue as any)
+
+    const valid = (value as number) <= desiredMax
 
     return [ valid, valid ? "" : errorMessage ]
 }
@@ -91,6 +113,8 @@ const validate = {
     equals,
     minLength,
     maxLength,
+    min,
+    max,
     checkbox: {
         min: checkBoxMin
     }
