@@ -236,6 +236,22 @@ describe("Utilities", () => {
             expect(callTestValidator("6")).toEqual([ false, "Invalid!" ])
         })
 
+        test("validate.range", () => {
+            const validator = validate.range(5, 7, "Invalid!")
+
+            const callTestValidator = callValidator(validator)
+
+            expect(callTestValidator(4)).toEqual([ false, "Invalid!" ])
+
+            expect(callTestValidator(5)).toEqual([ true, "" ])
+
+            expect(callTestValidator(6)).toEqual([ true, "" ])
+
+            expect(callTestValidator(7)).toEqual([ true, "" ])
+
+            expect(callTestValidator(8)).toEqual([ false, "Invalid!" ])
+        })
+
         test("validate.equalsField", () => {
             const { form, change } = renderTestForm({
                 formComponent: loginForm.formComponent,

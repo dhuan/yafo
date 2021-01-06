@@ -69,7 +69,7 @@ const checkBoxMin = <T>(min: number, errorMessage: string): FieldValidator<T> =>
     return [ valid, valid ? "" : errorMessage, ]
 }
 
-export const all =
+const all =
     <T>(validators: FieldValidator<T>[]): FieldValidator<T> => (value: Value, formValue: (id: T) => Value): FieldValidationResult =>
 {
     if (validators.length === 0)
@@ -85,7 +85,7 @@ export const all =
     return all(validators.slice(1))(value, formValue as any)
 }
 
-export const any =
+const any =
     <T>(validators: FieldValidator<T>[], errorMessage: string): FieldValidator<T> => (value: Value, formValue: (id: T) => Value): FieldValidationResult =>
 {
     if (validators.length === 0)
@@ -101,8 +101,13 @@ export const any =
     return any(validators.slice(1), errorMessage)(value, formValue as any)
 }
 
-export const none = <T>(_value: Value, _formValue: (id: T) => Value): FieldValidationResult =>
+const none = <T>(_value: Value, _formValue: (id: T) => Value): FieldValidationResult =>
     [ true, "" ]
+
+const range = (from: number, to: number, errorMessage: string) => all([
+    min(from, errorMessage),
+    max(to, errorMessage),
+])
 
 const validate = {
     none,
@@ -115,6 +120,7 @@ const validate = {
     maxLength,
     min,
     max,
+    range,
     checkbox: {
         min: checkBoxMin
     }
