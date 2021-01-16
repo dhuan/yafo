@@ -104,10 +104,19 @@ const any =
 const none = <T>(_value: Value, _formValue: (id: T) => Value): FieldValidationResult =>
     [ true, "" ]
 
-const range = (from: number, to: number, errorMessage: string) => all([
+const range = <T>(from: number, to: number, errorMessage: string): FieldValidator<T> => all([
     min(from, errorMessage),
     max(to, errorMessage),
 ])
+
+const notEmpty = <T>(errorMessage: string) => (value: Value, _formValue: (id: T) => Value): FieldValidationResult => {
+    if (typeof value !== "string")
+        throw new Error("Tried to validate 'notEmpty' with a non-text form value.")
+
+    const valid = (value as string).trim() !== ""
+
+    return [ valid, valid ? "" : errorMessage ]
+}
 
 const validate = {
     none,
@@ -121,6 +130,7 @@ const validate = {
     min,
     max,
     range,
+    notEmpty,
     checkbox: {
         min: checkBoxMin
     }

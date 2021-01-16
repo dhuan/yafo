@@ -368,5 +368,17 @@ describe("Utilities", () => {
 
             expect(callTestValidator("1234")).toEqual([ true, "" ])
         })
+
+        test("validate.notEmpty", () => {
+            const validator = validate.notEmpty("Invalid!")
+
+            const callTestValidator = callValidator(validator)
+
+            expect(callTestValidator("hello")).toEqual([ true, "" ])
+
+            expect(callTestValidator("")).toEqual([ false, "Invalid!" ])
+
+            expect(callTestValidator(" ")).toEqual([ false, "Invalid!" ])
+        })
     })
 })
